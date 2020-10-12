@@ -23,11 +23,12 @@ class FeaturedCourses extends Component {
       rating: '4.6',
       originalPrice: '$1799',
       discountedPrice: '$199',
-      thumbnail: 'https://img-a.udemycdn.com/course/240x135/1288044_d262_4.jpg?ef_bGb-l7fymYgM8RbuBZoZyX3X5vrxq-J65lDugvCyBEjaZ9vn9RYzF1CsNGQlqB9dmg9m99a52hI54pSPRY-BcxZ4pXpmNN7UCk09Ho8qhVuWGujXM8wZ8D7_bB148',
+      thumbnail: 'https://img-a.udemycdn.com/course/240x135/1570206_26c6_4.jpg?g8DduwjeA8HsswHzYgiXUtz6we5mlR8fZwZTOOiLRV_SDp6WrWeP60dbsn39RYZ8LeZ_AGw_83G_ZtD1liDXFONlo5HZ3vOenyCHGExd7xOtWGEATQntUVJUFracgzUv 1x, https://img-a.udemycdn.com/course/480x270/1570206_26c6_4.jpg?e7VxEUn4ma5roTuwqcqoY3XuIWsbRFpScdS_hPD3KC1ft8agSQfASBWyPYv7bMGSQr83gnj_jiDyFYHycJV9f4YI6KNR32aGsiV4obmIVNqKtdFoMozRquPIwoZ3SEf9 2x',
       reviews: '280',
       bestseller: true,
       category: 'Business'
-    }]}
+    },
+  ]}
   }
   render() {
     return (
@@ -56,7 +57,13 @@ class FeaturedCourses extends Component {
             <Nav.Link eventKey="Link-3">Personal Development</Nav.Link>
           </Nav.Item>
         </Nav>
-        <Courses {...this.state.featuredCourses[0]}/>
+        {/* <Courses {...this.state.featuredCourses[0]}/> */}
+        <Courses featuredCourses = {this.state.featuredCourses}/>
+
+{/* 
+        {this.state.featuredCourses.map((course)=> 
+          <Courses {...course}/>
+        )} */}
       </>
     );
   }

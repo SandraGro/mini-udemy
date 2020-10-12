@@ -1,26 +1,33 @@
-import React from "react";
-import { Card, Badge } from 'react-bootstrap';
+import React, { Component } from "react";
+import { Card, Badge, CardDeck } from "react-bootstrap";
 import "./Courses.scss";
 
+class Courses extends Component {
+  super(props) {}
 
-function Courses (props) {
-  return (
-    <Card style={{ width: "18rem" }}>
-      <Card.Img
-        variant="top"
-        src= {props.thumbnail}
-      />
-      <Card.Body>
-        <Card.Title >{props.title}</Card.Title>
-        <Card.Text>
-          {props.author}
-        </Card.Text>
-        <span>{props.discountedPrice}</span>
-        <span>{props.originalPrice}</span>
-        {props.bestseller ? <Badge variant="warning">Bestseller</Badge> : '' }
-      </Card.Body>
-    </Card>
-  );
+  render() {
+    return (
+      <>
+        <CardDeck>
+          {this.props.featuredCourses.map((course) => (
+            <Card>
+              <Card.Img variant="top" src={course.thumbnail} />
+              <Card.Body>
+                <Card.Title>{course.title}</Card.Title>
+                <Card.Text>{course.author}</Card.Text>
+                <span>{course.discountedPrice}</span>
+                <span>{course.originalPrice}</span>
+                {course.bestseller ? (
+                  <Badge variant="warning">Bestseller</Badge>
+                ) : (
+                  ""
+                )}
+              </Card.Body>
+            </Card>
+          ))}
+        </CardDeck>
+      </>
+    );
+  }
 }
-
 export default Courses;
