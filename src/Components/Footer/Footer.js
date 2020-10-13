@@ -3,6 +3,7 @@ import './Footer.scss';
 import { Row, Col, Container } from 'react-bootstrap';
 import * as icons from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Link } from "react-router-dom";
 
 
 function Footer() {
@@ -15,11 +16,11 @@ function Footer() {
                         <Row>
                             <Col xs={10}>
                                 <ul className="unstyled-list">
-                                    <li><a href>Udemy for Business</a></li>
-                                    <li><a href>Teach on Udemy</a></li>
-                                    <li><a href>Get the app</a></li>
-                                    <li><a href>About us</a></li>
-                                    <li><a href>Contact us</a></li>
+                                    <li><Link to="/">Udemy for Business</Link></li>
+                                    <li><Link to="/">Teach on Udemy</Link></li>
+                                    <li><Link to="/">Get the app</Link></li>
+                                    <li><Link to="/">About us</Link></li>
+                                    <li><Link to="/">Contact us</Link></li>
                                 </ul>
                             </Col>
                         </Row>
@@ -28,10 +29,10 @@ function Footer() {
                         <Row>
                             <Col xs={10}>
                                 <ul className="unstyled-list">
-                                    <li><a href>Job</a></li>
-                                    <li><a href>Blog</a></li>
-                                    <li><a href>Help and assistance</a></li>
-                                    <li><a href>Affiliate</a></li>
+                                    <li><Link to="/">Job</Link></li>
+                                    <li><Link to="/">Blog</Link></li>
+                                    <li><Link to="/">Help and assistance</Link></li>
+                                    <li><Link to="/">Affiliate</Link></li>
                                 </ul>
                             </Col>
                         </Row>
@@ -40,10 +41,10 @@ function Footer() {
                         <Row>
                             <Col xs={10}>
                                 <ul className="unstyled-list">
-                                    <li><a href>Terms</a></li>
-                                    <li><a href>Privacy Policy and Cookies Policy</a></li>
-                                    <li><a href>Site Map</a></li>
-                                    <li><a href>Featured courses</a></li>
+                                    <li><Link to="/">Terms</Link></li>
+                                    <li><Link to="/">Privacy Policy and Cookies Policy</Link></li>
+                                    <li><Link to="/">Site Map</Link></li>
+                                    <li><Link to="/">Featured courses</Link></li>
                                 </ul>
                             </Col>
                         </Row>
@@ -80,9 +81,9 @@ function Footer() {
                 <div className="footer-logo-container">
                     <Row>
                         <Col xs={6}>
-                            <div class="">Udemyxlogo</div>
+                            <div>Udemyxlogo</div>
                         </Col>
-                        <div class="">© 2020 Udemyx, Inc.</div>
+                        <div>© 2020 Udemyx, Inc.</div>
                     </Row>
                 </div>
             </Container>

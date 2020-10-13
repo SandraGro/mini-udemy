@@ -28,42 +28,56 @@ class FeaturedCourses extends Component {
       bestseller: true,
       category: 'Business'
     },
+    {
+      title: 'User Experience Design Essentials - Adobe XD UI UX Design',
+      author: 'Scott Harris',
+      rating: '4.6',
+      originalPrice: '$1799',
+      discountedPrice: '$199',
+      thumbnail: 'https://img-a.udemycdn.com/course/240x135/1409030_6722_4.jpg?dy8Ub2XAAAr8HcWzmA9S_dbvC9uyBKMhqaiRpLDYBDAxdw9C17vySFBnffgt8iQRoHmrc0fHmza0r56EJAwjp9t2Gdif1ys73GumgPljd9aZImT2OY8Uyj3OJ1ZwKzqr 1x, https://img-a.udemycdn.com/course/480x270/1409030_6722_4.jpg?Roh5RFEjuNcFa8rTGXtW7Roo5iSeydrPa7-SIrB4Q8uacnXKe78LaTKwWAbkIOmUWMQhDBiHSNFV8Z-6RfDOL-qxRbtcK7KRDydReHlErLrOC66VB5Ihh5IsV7iFSvuz 2x',
+      reviews: '280',
+      bestseller: true,
+      category: 'Design'
+    },
+    {
+      title: 'Photography Beginners: DSLR Photography Camera Settings',
+      author: 'Rosie Parsons',
+      rating: '4.3',
+      originalPrice: '$1899',
+      discountedPrice: '$199',
+      thumbnail: 'https://img-a.udemycdn.com/course/240x135/410068_fea4_2.jpg?wDi_M1EPjqGCGSsbayaIh6zdHgLJ3xAM3k141WGTLZobHVnimb2-w1v-JMz0nLS3moRC9ELSwwGgwaUTM7BAXGIMHjKndo5VQRaHWz3m5ik7Zrq3LWd8b4bB8U1YfU0 1x, https://img-a.udemycdn.com/course/480x270/410068_fea4_2.jpg?haWxl114j3nK9Diz0-CyfCeMXHik7Jfkvz6o5eK7x0AY2IFa6gdZE-YrdFuDRkfQOQI_cHj1DtyDFqG9ZP52poPnQheK1ihP4NxfekiXWUq9rvftJa54_2v-IeuxKAo 2x',
+      reviews: '280',
+      bestseller: true,
+      category: 'Photography'
+    },
   ]}
   }
+  sortByCategory (courses) {
+    let coursesByCategory = {};
+    for (let course of courses){
+      if(coursesByCategory[course.category] === undefined){
+        coursesByCategory[course.category] = [];
+      }
+      coursesByCategory[course.category].push(course);
+    }
+    return coursesByCategory;
+  }
   render() {
+    const filteredCourses = this.sortByCategory(this.state.featuredCourses);
     return (
       <>
         <h4>The world's largest selection of courses</h4>
-        <Nav variant="tabs" defaultActiveKey="/home">
-          <Nav.Item>
-            <Nav.Link href="/home">Business</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="link-1">Design</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Link-2">Photography</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Link-3">Development</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Link-3">Marketing</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Link-3">IT & Software</Nav.Link>
-          </Nav.Item>
-          <Nav.Item>
-            <Nav.Link eventKey="Link-3">Personal Development</Nav.Link>
-          </Nav.Item>
+        <Nav variant="tabs" defaultActiveKey="Link-0">
+          {Object.keys(filteredCourses).map((category, index) =>
+          {
+            console.log(category);
+            return (
+            <Nav.Item key={`category-${index}`}>
+              <Nav.Link eventKey="Link-0" onClick={()=> console.log('loquesea')}>{category}</Nav.Link>
+            </Nav.Item>
+          )})}
         </Nav>
-        {/* <Courses {...this.state.featuredCourses[0]}/> */}
-        <Courses featuredCourses = {this.state.featuredCourses}/>
-
-{/* 
-        {this.state.featuredCourses.map((course)=> 
-          <Courses {...course}/>
-        )} */}
+        <Courses featuredCourses = {filteredCourses.Design}/>
       </>
     );
   }

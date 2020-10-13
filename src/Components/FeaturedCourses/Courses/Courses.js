@@ -3,14 +3,12 @@ import { Card, Badge, CardDeck } from "react-bootstrap";
 import "./Courses.scss";
 
 class Courses extends Component {
-  super(props) {}
-
   render() {
     return (
       <>
         <CardDeck>
-          {this.props.featuredCourses.map((course) => (
-            <Card>
+          {this.props.featuredCourses.map((course, index) => (
+            <Card key={`cardDeck-${index}`}>
               <Card.Img variant="top" src={course.thumbnail} />
               <Card.Body>
                 <Card.Title>{course.title}</Card.Title>

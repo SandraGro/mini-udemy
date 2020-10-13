@@ -34,7 +34,7 @@ class BenefitsContainer extends Component {
                         </Col>
                         <Col md={4}>
                             <Row>
-                                <Col xs={2} fill className="flex-column">
+                                <Col xs={2} className="flex-column">
                                     <FontAwesomeIcon icon={icons.faInfinity} />
                                 </Col>
                                 <Col xs={10}>
