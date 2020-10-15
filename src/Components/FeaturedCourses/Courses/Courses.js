@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Card, Badge, CardDeck } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Courses.scss";
 
 class Courses extends Component {
@@ -8,19 +9,21 @@ class Courses extends Component {
       <>
         <CardDeck>
           {this.props.featuredCourses.map((course, index) => (
-            <Card key={`cardDeck-${index}`}>
-              <Card.Img variant="top" src={course.thumbnail} />
-              <Card.Body>
-                <Card.Title>{course.title}</Card.Title>
-                <Card.Text>{course.author}</Card.Text>
-                <span>{course.discountedPrice}</span>
-                <span>{course.originalPrice}</span>
-                {course.bestseller ? (
-                  <Badge variant="warning">Bestseller</Badge>
-                ) : (
-                  ""
-                )}
-              </Card.Body>
+            <Card className="course-card" key={`cardDeck-${index}`}>
+              <Link to={`/course/${course.slug}`}>
+                <Card.Img variant="top" src={course.thumbnail} />
+                <Card.Body>
+                  <Card.Title>{course.title}</Card.Title>
+                  <Card.Text>{course.author}</Card.Text>
+                  <span>{course.discountedPrice}</span>
+                  <span>{course.originalPrice}</span>
+                  {course.bestseller ? (
+                    <Badge variant="warning">Bestseller</Badge>
+                  ) : (
+                    ""
+                  )}
+                </Card.Body>
+              </Link>
             </Card>
           ))}
         </CardDeck>
