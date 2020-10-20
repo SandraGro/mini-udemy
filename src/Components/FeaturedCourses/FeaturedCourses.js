@@ -1,19 +1,31 @@
 import React, { Component } from "react";
 import { Nav } from "react-bootstrap";
-import Courses from './Courses/Courses';
+import Courses from "./Courses/Courses";
+import axios from "../../axios-intance";
 
 class FeaturedCourses extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
-      activeCategory: 'Business',
-      featuredCourses:[...props.featuredCourses],
-      }
+      activeCategory: "Business",
+      featuredCourses: [],
+    };
   }
-  sortByCategory (courses) {
+  componentDidMount() {
+    axios
+      .get("/featuredCourses.json")
+      .then((response) => {
+        this.setState({ featuredCourses: Object.values(response.data) });
+      })
+      .catch((error) => {
+        this.setState({ error: true });
+      });
+  }
+
+  sortByCategory(courses) {
     let coursesByCategory = {};
-    for (let course of courses){
-      if(coursesByCategory[course.category] === undefined){
+    for (let course of courses) {
+      if (coursesByCategory[course.category] === undefined) {
         coursesByCategory[course.category] = [];
       }
       coursesByCategory[course.category].push(course);
@@ -26,15 +38,26 @@ class FeaturedCourses extends Component {
       <>
         <h4>The world's largest selection of courses</h4>
         <Nav activeKey={"link-" + this.state.activeCategory} variant="tabs">
-          {Object.keys(filteredCourses).map((category, index) =>
-          {
+          {Object.keys(filteredCourses).map((category, index) => {
             return (
-            <Nav.Item key={`category-${index}`}>
-              <Nav.Link eventKey={`link-${category}`} onClick={()=> this.setState({activeCategory: category })}>{category}</Nav.Link>
-            </Nav.Item>
-          )})}
+              <Nav.Item key={`category-${index}`}>
+                <Nav.Link
+                  eventKey={`link-${category}`}
+                  onClick={() => this.setState({ activeCategory: category })}
+                >
+                  {category}
+                </Nav.Link>
+              </Nav.Item>
+            );
+          })}
         </Nav>
-        <Courses featuredCourses = {filteredCourses[this.state.activeCategory]}/>
+        {!this.state.featuredCourses.length ? (
+          <p>Loading</p>
+        ) : (
+          <Courses
+            featuredCourses={filteredCourses[this.state.activeCategory]}
+          />
+        )}
       </>
     );
   }
