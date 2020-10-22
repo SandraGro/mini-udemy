@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import "./CourseDetail.scss";
 import { useParams } from "react-router-dom";
-import axios from "../../axios-intance";
 
 
 function CourseDetail(props) {
@@ -13,18 +12,11 @@ function CourseDetail(props) {
   console.log(courseSlug);
   const [featureCourse, setFeatureCourse] = useState(null);
   useEffect(() => {
-    axios
-      .get("/featuredCourses.json")
-      .then((response) => {
-        let courseList = Object.values(response.data);
+        let courseList = Object.values(props.featuredCourses);
         setFeatureCourse(courseList.filter((course) => {
           return (course.slug === courseSlug);
         })[0]);
-      })
-      .catch((error) => {
-        this.setState({ error: true });
-      });
-  },[courseSlug]);
+  },[props.featuredCourses, courseSlug]);
   if (!featureCourse) {
     return <p>Loading...</p>
   }

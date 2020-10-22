@@ -23,7 +23,6 @@ class Header extends Component {
     const categories = {};
     for (let course of this.props.featuredCourses) {
       categories[course.category] = true;
-      console.log(categories);
     }
 
     return (

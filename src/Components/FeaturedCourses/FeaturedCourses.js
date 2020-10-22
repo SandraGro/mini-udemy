@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Nav } from "react-bootstrap";
 import Courses from "./Courses/Courses";
-import axios from "../../axios-intance";
 
 class FeaturedCourses extends Component {
   constructor(props) {
@@ -10,16 +9,6 @@ class FeaturedCourses extends Component {
       activeCategory: "Business",
       featuredCourses: [],
     };
-  }
-  componentDidMount() {
-    axios
-      .get("/featuredCourses.json")
-      .then((response) => {
-        this.setState({ featuredCourses: Object.values(response.data) });
-      })
-      .catch((error) => {
-        this.setState({ error: true });
-      });
   }
 
   sortByCategory(courses) {
@@ -33,7 +22,7 @@ class FeaturedCourses extends Component {
     return coursesByCategory;
   }
   render() {
-    const filteredCourses = this.sortByCategory(this.state.featuredCourses);
+    const filteredCourses = this.sortByCategory(this.props.featuredCourses);
     return (
       <>
         <h4>The world's largest selection of courses</h4>
@@ -51,7 +40,7 @@ class FeaturedCourses extends Component {
             );
           })}
         </Nav>
-        {!this.state.featuredCourses.length ? (
+        {!this.props.featuredCourses.length ? (
           <p>Loading</p>
         ) : (
           <Courses
