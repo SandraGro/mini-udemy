@@ -1,10 +1,31 @@
 import React, { Component } from "react";
-import './Header.scss'
-import { Form, Nav, Navbar, FormControl, NavDropdown, Button } from 'react-bootstrap';
+import "./Header.scss";
+import {
+  Form,
+  Nav,
+  Navbar,
+  FormControl,
+  NavDropdown,
+  Button,
+} from "react-bootstrap";
 
 class Header extends Component {
-
   render() {
+    // const categories2 = [];
+    // for (let i in this.props.featuredCourses) {
+    //   const categoriesDuplicated = categories.filter(
+    //     (category) => category === this.props.featuredCourses[i].category
+    //   );
+    //   if (!(categoriesDuplicated.length > 0)) {
+    //     categories2.push(this.props.featuredCourses[i].category);
+    //   }
+    // }
+    const categories = {};
+    for (let course of this.props.featuredCourses) {
+      categories[course.category] = true;
+      console.log(categories);
+    }
+
     return (
       <Navbar bg="light" expand="lg" className="main-navbar navbar">
         <Navbar.Brand href="/">Udemyx</Navbar.Brand>
@@ -12,14 +33,24 @@ class Header extends Component {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="justify-content-end mr-auto">
             <NavDropdown title="Categories" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Development</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Business</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Design</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">All courses</NavDropdown.Item>
+              {Object.keys(categories).map((category, index) => (
+                <NavDropdown.Item
+                  key={`dropdown-option-${index}`}
+                  href="#action/3.1"
+                >
+                  {category}
+                </NavDropdown.Item>
+              ))}
+              <NavDropdown.Item href="#action/3.4">
+                All courses
+              </NavDropdown.Item>
             </NavDropdown>
             <Form inline>
-              <FormControl type="text" placeholder="Search" className="input-search mr-sm-2" />
+              <FormControl
+                type="text"
+                placeholder="Search"
+                className="input-search mr-sm-2"
+              />
             </Form>
             <Nav.Link href="#home">Udemyx for Business </Nav.Link>
             <Nav.Link href="#home">Teach on Udemyx </Nav.Link>

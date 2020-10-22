@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Navbar from '../Header/Header';
+import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 
 class Layout extends Component {
@@ -7,7 +7,7 @@ class Layout extends Component {
     render() {
         return (
             <>
-                <Navbar />
+                <Header featuredCourses={this.props.featuredCourses}/>
                 {this.props.children}
                 <Footer />
             </>

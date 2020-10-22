@@ -71,7 +71,7 @@ function App() {
   ];
   return (
     <Router>
-      <Layout>
+      <Layout featuredCourses={featuredCourses}>
         <Switch>
           <Route path="/course/:courseSlug">
             <CourseDetail featuredCourses={featuredCourses} />
