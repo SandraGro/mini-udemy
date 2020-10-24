@@ -6,6 +6,7 @@ import FeaturedCourses from "./Components/FeaturedCourses/FeaturedCourses";
 import Banner from "./Components/Banner/Banner";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "./axios-intance";
+import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory";
 
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
@@ -19,18 +20,42 @@ function App() {
         this.setState({ error: true });
       });
   }, []);
+  const sortByCategory = (courses) => {
+    let coursesByCategory = {};
+    for (let course of courses) {
+      if (coursesByCategory[course.category] === undefined) {
+        coursesByCategory[course.category] = [];
+      }
+      coursesByCategory[course.category].push(course);
+    }
+    return coursesByCategory;
+  };
+  const filteredCourses = sortByCategory(featuredCourses);
   return (
     <Router>
       <Layout featuredCourses={featuredCourses}>
         <Switch>
+          {
+            // Access to params using match property of the Route (similar to useParams hook)
+          }
+          <Route
+            path="/course/category/:categoryName"
+            render={({ match }) => (
+              <CoursesByCategory
+                categoryCourses={
+                  filteredCourses[match.params.categoryName] || []
+                }
+              />
+            )}
+          ></Route>
           <Route path="/course/:courseSlug">
-            <CourseDetail featuredCourses={featuredCourses} />
+            <CourseDetail filteredCourses={filteredCourses} />
           </Route>
           <Route path="/">
             <Banner />
             <BenefitsContainer />
             <hr></hr>
-            <FeaturedCourses featuredCourses={featuredCourses}/>
+            <FeaturedCourses filteredCourses={filteredCourses} />
           </Route>
         </Switch>
       </Layout>

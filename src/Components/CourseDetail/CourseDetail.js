@@ -9,7 +9,6 @@ import { useParams } from "react-router-dom";
 
 function CourseDetail(props) {
   let { courseSlug } = useParams();
-  console.log(courseSlug);
   const [featureCourse, setFeatureCourse] = useState(null);
   useEffect(() => {
         let courseList = Object.values(props.featuredCourses);

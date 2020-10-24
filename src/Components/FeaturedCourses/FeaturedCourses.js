@@ -11,23 +11,12 @@ class FeaturedCourses extends Component {
     };
   }
 
-  sortByCategory(courses) {
-    let coursesByCategory = {};
-    for (let course of courses) {
-      if (coursesByCategory[course.category] === undefined) {
-        coursesByCategory[course.category] = [];
-      }
-      coursesByCategory[course.category].push(course);
-    }
-    return coursesByCategory;
-  }
   render() {
-    const filteredCourses = this.sortByCategory(this.props.featuredCourses);
     return (
       <>
         <h4>The world's largest selection of courses</h4>
         <Nav activeKey={"link-" + this.state.activeCategory} variant="tabs">
-          {Object.keys(filteredCourses).map((category, index) => {
+          {Object.keys(this.props.filteredCourses).map((category, index) => {
             return (
               <Nav.Item key={`category-${index}`}>
                 <Nav.Link
@@ -40,11 +29,11 @@ class FeaturedCourses extends Component {
             );
           })}
         </Nav>
-        {!this.props.featuredCourses.length ? (
+        {!Object.keys(this.props.filteredCourses).length ? (
           <p>Loading</p>
         ) : (
           <Courses
-            featuredCourses={filteredCourses[this.state.activeCategory]}
+            featuredCourses={this.props.filteredCourses[this.state.activeCategory]}
           />
         )}
       </>

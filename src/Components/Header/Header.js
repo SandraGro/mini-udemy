@@ -8,6 +8,7 @@ import {
   NavDropdown,
   Button,
 } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 class Header extends Component {
   render() {
@@ -33,12 +34,14 @@ class Header extends Component {
           <Nav className="justify-content-end mr-auto">
             <NavDropdown title="Categories" id="basic-nav-dropdown">
               {Object.keys(categories).map((category, index) => (
-                <NavDropdown.Item
+                <Link
+                  to={`/course/category/${category}`}
                   key={`dropdown-option-${index}`}
-                  href="#action/3.1"
                 >
-                  {category}
-                </NavDropdown.Item>
+                  <NavDropdown.Item href="#action/3.1">
+                    {category}
+                  </NavDropdown.Item>
+                </Link>
               ))}
               <NavDropdown.Item href="#action/3.4">
                 All courses
