@@ -6,18 +6,20 @@ import * as icons from "@fortawesome/free-solid-svg-icons";
 import "./CourseDetail.scss";
 import { useParams } from "react-router-dom";
 
-
 function CourseDetail(props) {
   let { courseSlug } = useParams();
   const [featureCourse, setFeatureCourse] = useState(null);
   useEffect(() => {
-        let courseList = Object.values(props.featuredCourses);
-        setFeatureCourse(courseList.filter((course) => {
-          return (course.slug === courseSlug);
-        })[0]);
-  },[props.featuredCourses, courseSlug]);
+    let courseList = props.featuredCourses;
+    setFeatureCourse(
+      courseList.filter((course) => {
+        return course.slug === courseSlug;
+      })[0]
+    );
+    console.log(useState, "useState");
+  }, [props.featuredCourses, courseSlug]);
   if (!featureCourse) {
-    return <p>Loading...</p>
+    return <p>Loading...</p>;
   }
   return (
     <>
@@ -28,13 +30,13 @@ function CourseDetail(props) {
             <FontAwesomeIcon icon={icons.faPlayCircle} size="5x" />
           </span>
           <Card.Body>
-            <Card.Title>{featureCourse.discountedPrice}</Card.Title>
-            <Card.Text>{featureCourse.originalPrice}</Card.Text>
+            <Card.Title>${featureCourse.discountedPrice} </Card.Title>
+            <Card.Text>${featureCourse.originalPrice}</Card.Text>
             <Button className="card-button" variant="danger">
               Add to cart
             </Button>
             <Button className="card-button" variant="outline-success">
-              By now
+              Buy now
             </Button>
           </Card.Body>
         </Card>

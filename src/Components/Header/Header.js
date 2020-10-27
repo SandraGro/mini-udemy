@@ -29,37 +29,37 @@ class Header extends Component {
     return (
       <Navbar bg="light" expand="lg" className="main-navbar navbar">
         <Navbar.Brand href="/">Udemyx</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="justify-content-end mr-auto">
-            <NavDropdown title="Categories" id="basic-nav-dropdown">
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="mr-auto">
+            <NavDropdown title="Categories" id="collasible-nav-dropdown">
               {Object.keys(categories).map((category, index) => (
                 <Link
+                  className="dropdown-item"
                   to={`/course/category/${category}`}
                   key={`dropdown-option-${index}`}
                 >
-                  <NavDropdown.Item href="#action/3.1">
-                    {category}
-                  </NavDropdown.Item>
+                  {category}
                 </Link>
               ))}
               <NavDropdown.Item href="#action/3.4">
                 All courses
               </NavDropdown.Item>
             </NavDropdown>
-            <Form inline>
-              <FormControl
-                type="text"
-                placeholder="Search"
-                className="input-search mr-sm-2"
-              />
-            </Form>
-            <Nav.Link href="#home">Udemyx for Business </Nav.Link>
-            <Nav.Link href="#home">Teach on Udemyx </Nav.Link>
-            <Nav.Link href="#link">My courses</Nav.Link>
-            <Button variant="outline-success">Log in</Button>
-            <Button variant="success">Sign up</Button>
           </Nav>
+          <Form inline>
+            <FormControl
+              type="text"
+              placeholder="Search"
+              className="input-search mr-sm-2"
+            />
+          </Form>
+          <Nav.Link href="#home">Udemyx for Business </Nav.Link>
+          <Nav.Link href="#home">Teach on Udemyx </Nav.Link>
+          <Nav.Link href="#link">My courses</Nav.Link>
+          <Link to="/mycourses/wishlist"> {"<3"}</Link>
+          <Button variant="outline-success">Log in</Button>
+          <Button variant="success">Sign up</Button>
         </Navbar.Collapse>
       </Navbar>
     );

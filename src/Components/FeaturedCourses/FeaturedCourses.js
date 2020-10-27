@@ -30,7 +30,7 @@ class FeaturedCourses extends Component {
           })}
         </Nav>
         {!Object.keys(this.props.filteredCourses).length ? (
-          <p>Loading</p>
+          <p>Loading ...!</p>
         ) : (
           <Courses
             featuredCourses={this.props.filteredCourses[this.state.activeCategory]}

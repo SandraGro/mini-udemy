@@ -15,8 +15,8 @@ class Courses extends Component {
                 <Card.Body>
                   <Card.Title>{course.title}</Card.Title>
                   <Card.Text>{course.author}</Card.Text>
-                  <span>{course.discountedPrice}</span>
-                  <span>{course.originalPrice}</span>
+                  <span>${course.discountedPrice} </span>
+                  <span>${course.originalPrice}</span>
                   {course.bestseller ? (
                     <Badge variant="warning">Bestseller</Badge>
                   ) : (

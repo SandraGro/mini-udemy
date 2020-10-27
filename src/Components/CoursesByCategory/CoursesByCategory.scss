@@ -1,13 +1,14 @@
 .card-item{
-    border: none;
-    height: 250px;
     width: 770px;
-    margin-left: 20px;
     float: right;
 }
 
 .card-header{
     background-color: #FFF;
+}
+
+.card-title {
+    display: inline;
 }
 
 .container{
@@ -20,4 +21,8 @@ img.card-img-top.images {
 
 .margin-img{
     margin: auto 0;
+}
+
+.price {
+    float: right;
 }

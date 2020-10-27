@@ -7,18 +7,38 @@ import Banner from "./Components/Banner/Banner";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "./axios-intance";
 import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory";
+import MyCourses from "./Components/MyCourses/MyCourses";
 
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
+  const [user, setUser] = useState([]);
+
   useEffect(() => {
-    axios
-      .get("/featuredCourses.json")
-      .then((response) => {
-        setFeatureCourses(Object.values(response.data));
-      })
-      .catch((error) => {
-        this.setState({ error: true });
-      });
+    const setData = async () => {
+      try {
+        const courses = await axios.get("/featuredCourses.json");
+        if (courses) {
+          setFeatureCourses(Object.values(courses.data));
+        }
+        const users = await axios.get("/Users.json");
+        if (users) {
+          setUser(
+            Object.values(users.data).filter((user) => user.username === "Sandra")[0]
+          );
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    setData();
+  //   axios
+  //     .get("/featuredCourses.json")
+  //     .then((response) => {
+  //       setFeatureCourses(Object.values(response.data));
+  //     })
+  //     .catch((error) => {
+  //       this.setState({ error: true });
+  //     });
   }, []);
   const sortByCategory = (courses) => {
     let coursesByCategory = {};
@@ -31,6 +51,7 @@ function App() {
     return coursesByCategory;
   };
   const filteredCourses = sortByCategory(featuredCourses);
+  console.log(user, 'user');
   return (
     <Router>
       <Layout featuredCourses={featuredCourses}>
@@ -49,7 +70,10 @@ function App() {
             )}
           ></Route>
           <Route path="/course/:courseSlug">
-            <CourseDetail filteredCourses={filteredCourses} />
+            <CourseDetail featuredCourses={featuredCourses} />
+          </Route>
+          <Route path="/mycourses/:subsection">
+            <MyCourses featuredCourses={featuredCourses} />
           </Route>
           <Route path="/">
             <Banner />
