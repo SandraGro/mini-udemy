@@ -17,28 +17,48 @@ function App() {
     const setData = async () => {
       try {
         const courses = await axios.get("/featuredCourses.json");
+        let featuredCourses;
         if (courses) {
-          setFeatureCourses(Object.values(courses.data));
+          featuredCourses = Object.values(courses.data);
+          setFeatureCourses(featuredCourses);
         }
         const users = await axios.get("/Users.json");
         if (users) {
-          setUser(
-            Object.values(users.data).filter((user) => user.username === "Sandra")[0]
-          );
+          let user = Object.values(users.data).filter(
+            (user) => user.username === "Sandra"
+          )[0];
+          // Definición de arreglos con los slugs
+          let wishlistSlugs = Object.values(user.wishlistCourses);
+          let myCoursesSlugs = Object.values(user.myCourses);
+          setUser({
+            //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
+            ...user,
+            myCourses: myCoursesSlugs.map((slug) => {
+              console.log(slug, featuredCourses, "map");
+              return featuredCourses.filter(
+                (course) => course.slug === slug
+              )[0];
+            }),
+            wishlistCourses: wishlistSlugs.map((slug) => {
+              return featuredCourses.filter(
+                (course) => course.slug === slug
+              )[0];
+            }),
+          });
         }
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     setData();
-  //   axios
-  //     .get("/featuredCourses.json")
-  //     .then((response) => {
-  //       setFeatureCourses(Object.values(response.data));
-  //     })
-  //     .catch((error) => {
-  //       this.setState({ error: true });
-  //     });
+    //   axios
+    //     .get("/featuredCourses.json")
+    //     .then((response) => {
+    //       setFeatureCourses(Object.values(response.data));
+    //     })
+    //     .catch((error) => {
+    //       this.setState({ error: true });
+    //     });
   }, []);
   const sortByCategory = (courses) => {
     let coursesByCategory = {};
@@ -51,7 +71,7 @@ function App() {
     return coursesByCategory;
   };
   const filteredCourses = sortByCategory(featuredCourses);
-  console.log(user, 'user');
+  console.log(user, "user");
   return (
     <Router>
       <Layout featuredCourses={featuredCourses}>
@@ -64,7 +84,9 @@ function App() {
             render={({ match }) => (
               <CoursesByCategory
                 categoryCourses={
-                  filteredCourses[match.params.categoryName] || []
+                  match.params.categoryName === "allcourses"
+                    ? featuredCourses
+                    : filteredCourses[match.params.categoryName] || []
                 }
               />
             )}
@@ -72,9 +94,15 @@ function App() {
           <Route path="/course/:courseSlug">
             <CourseDetail featuredCourses={featuredCourses} />
           </Route>
-          <Route path="/mycourses/:subsection">
-            <MyCourses featuredCourses={featuredCourses} />
-          </Route>
+          <Route
+            path="/mycourses/:subsection"
+            render={({ match }) => (
+              <MyCourses
+                featuredCourses={featuredCourses}
+                activeSection={match.params.subsection}
+              />
+            )}
+          ></Route>
           <Route path="/">
             <Banner />
             <BenefitsContainer />

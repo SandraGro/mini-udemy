@@ -1,32 +1,34 @@
-import React, { Component } from 'react';
-import { CardDeck, Card, Badge} from 'react-bootstrap';
+import React, { Component } from "react";
+import { Nav } from "react-bootstrap";
+import Courses from "../FeaturedCourses/Courses/Courses";
 
 class MyCourses extends Component {
-    render() {
-        return (
-          <>
-            <CardDeck>
-              {this.props.featuredCourses.map((course, index) => (
-                <Card className="course-card" key={`cardDeck-${index}`}>
-                    <Card.Img variant="top" src={course.thumbnail} />
-                    <Card.Body>
-                      <Card.Title>{course.title}</Card.Title>
-                      <Card.Text>{course.author}</Card.Text>
-                      <span>${course.discountedPrice} </span>
-                      <span>${course.originalPrice}</span>
-                      {course.bestseller ? (
-                        <Badge variant="warning">Bestseller</Badge>
-                      ) : (
-                        ""
-                      )}
-                    </Card.Body>
-                </Card>
-              ))}
-            </CardDeck>
-          </>
-        );
-      }
-
+  constructor (props) {
+    super (props);
+    this.state = {
+      activeSection : props.activeSection,
+    }
+    console.log(this.state, 'state');
+  }
+  render() {
+    return (
+      <>
+        <Nav activeKey={this.state.activeSection} variant="tabs">
+          <Nav.Item>
+            <Nav.Link eventKey="learning" onClick={() => this.setState({ activeSection: 'learning' })}>All courses</Nav.Link>
+          </Nav.Item>
+          <Nav.Item>
+            <Nav.Link eventKey="wishlist" onClick={() => this.setState({ activeSection: 'wishlist' })}>Wishlist</Nav.Link>
+          </Nav.Item>
+        </Nav>
+        {!Object.keys([]).length ? (
+          <p>Loading ...!</p>
+        ) : (
+          <Courses featuredCourses={[]} />
+        )}
+      </>
+    );
+  }
 }
 
 export default MyCourses;

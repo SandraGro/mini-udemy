@@ -32,7 +32,7 @@ class Header extends Component {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
-            <NavDropdown title="Categories" id="collasible-nav-dropdown">
+            <NavDropdown title="Categories">
               {Object.keys(categories).map((category, index) => (
                 <Link
                   className="dropdown-item"
@@ -42,9 +42,12 @@ class Header extends Component {
                   {category}
                 </Link>
               ))}
-              <NavDropdown.Item href="#action/3.4">
+              <Link
+                className="dropdown-item"
+                to={`/course/category/allcourses`}
+              >
                 All courses
-              </NavDropdown.Item>
+              </Link>
             </NavDropdown>
           </Nav>
           <Form inline>
@@ -56,7 +59,7 @@ class Header extends Component {
           </Form>
           <Nav.Link href="#home">Udemyx for Business </Nav.Link>
           <Nav.Link href="#home">Teach on Udemyx </Nav.Link>
-          <Nav.Link href="#link">My courses</Nav.Link>
+          <Link to="/mycourses/learning">My courses</Link>
           <Link to="/mycourses/wishlist"> {"<3"}</Link>
           <Button variant="outline-success">Log in</Button>
           <Button variant="success">Sign up</Button>
