@@ -9,7 +9,6 @@ import { useParams, useLocation } from "react-router-dom";
 function CourseDetail(props) {
   let { courseSlug } = useParams();
   let location = useLocation();
-  console.log(location, 'location');
   const [featureCourse, setFeatureCourse] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
@@ -19,7 +18,6 @@ function CourseDetail(props) {
         return course.slug === courseSlug;
       })[0]
     );
-    console.log(useState, "useState");
   }, [props.featuredCourses, courseSlug]);
   if (!featureCourse) {
     return <p>Loading...</p>;

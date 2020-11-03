@@ -12,7 +12,7 @@ import InfoTemplate from "./Components/InfoTemplates/InfoTemplate";
 
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     const setData = async () => {
@@ -35,7 +35,6 @@ function App() {
             //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
             ...user,
             myCourses: myCoursesSlugs.map((slug) => {
-              console.log(slug, featuredCourses, "map");
               return featuredCourses.filter(
                 (course) => course.slug === slug
               )[0];
@@ -72,7 +71,6 @@ function App() {
     return coursesByCategory;
   };
   const filteredCourses = sortByCategory(featuredCourses);
-  console.log(user, "user");
   return (
     <Router>
       <Layout featuredCourses={featuredCourses}>
@@ -100,11 +98,15 @@ function App() {
             render={({ match }) => (
               <MyCourses
                 featuredCourses={featuredCourses}
+                user={user}
                 activeSection={match.params.subsection}
               />
             )}
           ></Route>
-          <Route path="/:genericSection" render={() => <InfoTemplate />}></Route>
+          <Route
+            path="/:genericSection"
+            render={() => <InfoTemplate />}
+          ></Route>
           <Route path="/">
             <Banner />
             <BenefitsContainer />
