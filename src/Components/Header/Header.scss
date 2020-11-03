@@ -1,6 +1,7 @@
 .main-navbar.navbar {
-    height: 100px;
-
+    @media (min-width: 992px) {
+        height: 100px;
+    }
     .input-search {
         width: 300px;
         display: inline-block;
@@ -9,6 +10,4 @@
     }
 }
 
-button.btn.btn-success {
-    margin-left: 10px;
-}
+

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Button, Card } from "react-bootstrap";
+import { Badge, Button, Card, Modal, Form } from "react-bootstrap";
 import ReactStars from "react-rating-stars-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import "./CourseDetail.scss";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 function CourseDetail(props) {
   let { courseSlug } = useParams();
+  let location = useLocation();
+  console.log(location, 'location');
   const [featureCourse, setFeatureCourse] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   useEffect(() => {
     let courseList = props.featuredCourses;
     setFeatureCourse(
@@ -75,9 +78,39 @@ function CourseDetail(props) {
             </span>
             <span>English</span>
           </div>
-          <Button variant="outline-light">Wishlist </Button>
-          <Button variant="outline-light">Share </Button>
-          <Button variant="outline-light">Gift this course</Button>
+          <Button className="mr-1 mt-2" variant="outline-light">
+            Wishlist <FontAwesomeIcon icon={icons.faHeart} />
+          </Button>
+          <Button
+            className="mr-1 mt-2"
+            variant="outline-light"
+            onClick={() => setIsOpen(true)}
+          >
+            Share <FontAwesomeIcon icon={icons.faShare} />
+          </Button>
+          <Button className="mr-1 mt-2" variant="outline-light">
+            Gift this course
+          </Button>
+          <Modal
+            size="lg"
+            show={isOpen}
+            onHide={() => setIsOpen(false)}
+            aria-labelledby="example-modal-sizes-title-lg"
+          >
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-lg">
+              Share this course
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form inline>
+                <Form.Group>
+                    <Form.Control type="text" defaultValue={`http://localhost:3000${location.pathname}`}/>
+                  <Button variant="info">Copy</Button>
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+          </Modal>
         </div>
       </div>
       <div className="course-content">

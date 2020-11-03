@@ -9,6 +9,8 @@ import {
   Button,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as icons from '@fortawesome/free-solid-svg-icons';
 
 class Header extends Component {
   render() {
@@ -57,12 +59,14 @@ class Header extends Component {
               className="input-search mr-sm-2"
             />
           </Form>
-          <Nav.Link href="#home">Udemyx for Business </Nav.Link>
-          <Nav.Link href="#home">Teach on Udemyx </Nav.Link>
-          <Link to="/mycourses/learning">My courses</Link>
-          <Link to="/mycourses/wishlist"> {"<3"}</Link>
-          <Button variant="outline-success">Log in</Button>
-          <Button variant="success">Sign up</Button>
+          <Link className="mx-3 d-block" to="/business" >Udemyx for Business </Link>
+          <Link className="mx-3 d-block" to="/teaching">Teach on Udemyx </Link>
+          <Link className="mx-3 d-block" to="/mycourses/learning">My courses</Link>
+          <Link className="mx-3 d-block" to="/mycourses/wishlist">
+            <FontAwesomeIcon icon={icons.faHeart} />
+          </Link>
+          <Button className="ml-2" variant="outline-success">Log in</Button>
+          <Button className="ml-2" variant="success">Sign up</Button>
         </Navbar.Collapse>
       </Navbar>
     );

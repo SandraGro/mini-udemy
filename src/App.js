@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import axios from "./axios-intance";
 import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory";
 import MyCourses from "./Components/MyCourses/MyCourses";
+import InfoTemplate from "./Components/InfoTemplates/InfoTemplate";
 
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
@@ -103,6 +104,7 @@ function App() {
               />
             )}
           ></Route>
+          <Route path="/:genericSection" render={() => <InfoTemplate />}></Route>
           <Route path="/">
             <Banner />
             <BenefitsContainer />
