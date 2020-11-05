@@ -8,7 +8,6 @@ class MyCourses extends Component {
     this.state = {
       activeSection: props.activeSection,
     };
-    console.log(this.state, "state");
   }
   render() {
     //Convertir 'learning' a myCourses y 'wishlist' a wishlistCourses

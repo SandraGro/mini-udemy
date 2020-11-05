@@ -76,7 +76,11 @@ function CourseDetail(props) {
             </span>
             <span>English</span>
           </div>
-          <Button className="mr-1 mt-2" variant="outline-light">
+          <Button
+            className="mr-1 mt-2"
+            variant="outline-light"
+            onClick={() => props.addCourseToWishlist(courseSlug, props.user, props.setUser, props.featuredCourses)}
+          >
             Wishlist <FontAwesomeIcon icon={icons.faHeart} />
           </Button>
           <Button
@@ -97,15 +101,17 @@ function CourseDetail(props) {
           >
             <Modal.Header closeButton>
               <Modal.Title id="example-modal-sizes-title-lg">
-              Share this course
+                Share this course
               </Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <Form inline>
-                <Form.Group>
-                    <Form.Control type="text" defaultValue={`http://localhost:3000${location.pathname}`}/>
-                  <Button variant="info">Copy</Button>
-                </Form.Group>
+                <input
+                  className="share-input"
+                  type="text"
+                  defaultValue={`http://localhost:3000${location.pathname}`}
+                />
+                <Button variant="info">Copy</Button>
               </Form>
             </Modal.Body>
           </Modal>

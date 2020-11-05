@@ -10,6 +10,51 @@ import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory"
 import MyCourses from "./Components/MyCourses/MyCourses";
 import InfoTemplate from "./Components/InfoTemplates/InfoTemplate";
 
+async function fetchUser(setUser, featuredCourses) {
+  try {
+    const users = await axios.get("/Users.json");
+    if (users) {
+      let user = Object.values(users.data).filter(
+        (user) => user.username === "Sandra"
+      )[0];
+      // Definición de arreglos con los slugs
+      let wishlistSlugs = Object.values(user.wishlistCourses);
+      let myCoursesSlugs = Object.values(user.myCourses);
+      setUser({
+        //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
+        ...user,
+        myCourses: myCoursesSlugs.map((slug) => {
+          return featuredCourses.filter((course) => course.slug === slug)[0];
+        }),
+        wishlistCourses: wishlistSlugs.map((slug) => {
+          return featuredCourses.filter((course) => course.slug === slug)[0];
+        }),
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
+  try {
+    const propPrefix = "wishlistCourse";
+    const userId = "user01";
+    const result = await axios.patch(`/Users/${userId}/wishlistCourses.json`, {
+      [propPrefix + user.wishlistCourses.length]: slug,
+    });
+    if (result) {
+      fetchUser(setUser, featuredCourses);
+    }
+    //TODO
+    //Hacer que la ruta tome el usuario actual dinámicamente
+    //Actualizar el usuario con los cursos en el tab de wishlist
+    //Agregar la lógica para cuando un curso ya ha sido wishliteado
+    //Cambiar botón "buy now" to "go to course"
+    console.log(result, "result");
+  } catch (error) {}
+}
+
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
   const [user, setUser] = useState({});
@@ -22,29 +67,7 @@ function App() {
         if (courses) {
           featuredCourses = Object.values(courses.data);
           setFeatureCourses(featuredCourses);
-        }
-        const users = await axios.get("/Users.json");
-        if (users) {
-          let user = Object.values(users.data).filter(
-            (user) => user.username === "Sandra"
-          )[0];
-          // Definición de arreglos con los slugs
-          let wishlistSlugs = Object.values(user.wishlistCourses);
-          let myCoursesSlugs = Object.values(user.myCourses);
-          setUser({
-            //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
-            ...user,
-            myCourses: myCoursesSlugs.map((slug) => {
-              return featuredCourses.filter(
-                (course) => course.slug === slug
-              )[0];
-            }),
-            wishlistCourses: wishlistSlugs.map((slug) => {
-              return featuredCourses.filter(
-                (course) => course.slug === slug
-              )[0];
-            }),
-          });
+          fetchUser(setUser, featuredCourses);
         }
       } catch (error) {
         console.log(error);
@@ -91,7 +114,12 @@ function App() {
             )}
           ></Route>
           <Route path="/course/:courseSlug">
-            <CourseDetail featuredCourses={featuredCourses} />
+            <CourseDetail
+              featuredCourses={featuredCourses}
+              user={user}
+              setUser={setUser}
+              addCourseToWishlist={addCourseToWishlist}
+            />
           </Route>
           <Route
             path="/mycourses/:subsection"

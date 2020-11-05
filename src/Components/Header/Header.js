@@ -56,7 +56,7 @@ class Header extends Component {
             <FormControl
               type="text"
               placeholder="Search"
-              className="input-search mr-sm-2"
+              className="search-input mr-sm-2"
             />
           </Form>
           <Link className="mx-3 d-block" to="/business" >Udemyx for Business </Link>
