@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Badge, Button, Card, Modal, Form } from "react-bootstrap";
+import {
+  Badge,
+  Button,
+  Card,
+  Modal,
+  Form,
+  Col,
+  Row,
+  Container,
+} from "react-bootstrap";
 import ReactStars from "react-rating-stars-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +19,8 @@ function CourseDetail(props) {
   let { courseSlug } = useParams();
   let location = useLocation();
   const [featureCourse, setFeatureCourse] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpenShareModal, setIsOpenShareModal] = useState(false);
+  const [isOpenBuyModal, setIsOpenBuyModal] = useState(false);
   useEffect(() => {
     let courseList = props.featuredCourses;
     setFeatureCourse(
@@ -36,11 +46,47 @@ function CourseDetail(props) {
             <Button className="card-button" variant="danger">
               Add to cart
             </Button>
-            <Button className="card-button" variant="outline-success">
+            <Button
+              className="card-button"
+              variant="outline-success"
+              onClick={() => setIsOpenBuyModal(true)}
+            >
               Buy now
             </Button>
           </Card.Body>
         </Card>
+        <Modal show={isOpenBuyModal} onHide={() => setIsOpenBuyModal(false)}>
+          <Modal.Header closeButton>
+            <Modal.Title id="example-modal-sizes-title-lg">
+              Payment completed!
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h6 className="d-flex justify-content-center"> Order Details</h6>
+            <hr></hr>
+            <Container>
+              <Row>
+                <Col xs={12} md={8}>
+                  {featureCourse.title}
+                </Col>
+                <Col xs={6} md={4}>
+                  ${featureCourse.discountedPrice}
+                </Col>
+              </Row>
+            </Container>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={() => {
+              setIsOpenBuyModal(false)
+              props.addCourseToAllCourses(
+                courseSlug,
+                props.user,
+                props.setUser,
+                props.featuredCourses
+              )
+            }}>Continue</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
       <div className="py-5 top-container">
         <div className="title-container">
@@ -79,14 +125,21 @@ function CourseDetail(props) {
           <Button
             className="mr-1 mt-2"
             variant="outline-light"
-            onClick={() => props.addCourseToWishlist(courseSlug, props.user, props.setUser, props.featuredCourses)}
+            onClick={() =>
+              props.addCourseToWishlist(
+                courseSlug,
+                props.user,
+                props.setUser,
+                props.featuredCourses
+              )
+            }
           >
             Wishlist <FontAwesomeIcon icon={icons.faHeart} />
           </Button>
           <Button
             className="mr-1 mt-2"
             variant="outline-light"
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsOpenShareModal(true)}
           >
             Share <FontAwesomeIcon icon={icons.faShare} />
           </Button>
@@ -95,8 +148,8 @@ function CourseDetail(props) {
           </Button>
           <Modal
             size="lg"
-            show={isOpen}
-            onHide={() => setIsOpen(false)}
+            show={isOpenShareModal}
+            onHide={() => setIsOpenShareModal(false)}
             aria-labelledby="example-modal-sizes-title-lg"
           >
             <Modal.Header closeButton>

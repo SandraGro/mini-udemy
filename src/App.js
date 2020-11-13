@@ -18,16 +18,24 @@ async function fetchUser(setUser, featuredCourses) {
         (user) => user.username === "Sandra"
       )[0];
       // Definición de arreglos con los slugs
-      let wishlistSlugs = Object.values(user.wishlistCourses);
-      let myCoursesSlugs = Object.values(user.myCourses);
+      let wishlistSlugs = Object.entries(user.wishlistCourses);
+      let myCoursesSlugs = Object.entries(user.myCourses);
       setUser({
         //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
         ...user,
-        myCourses: myCoursesSlugs.map((slug) => {
-          return featuredCourses.filter((course) => course.slug === slug)[0];
+        myCourses: myCoursesSlugs.map(([id, slug]) => {
+          let course = {
+            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            id:id,
+          };
+          return course;
         }),
-        wishlistCourses: wishlistSlugs.map((slug) => {
-          return featuredCourses.filter((course) => course.slug === slug)[0];
+        wishlistCourses: wishlistSlugs.map(([id, slug]) => {
+          let course = {
+            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            id:id,
+          };
+          return course;
         }),
       });
     }
@@ -37,9 +45,29 @@ async function fetchUser(setUser, featuredCourses) {
 }
 
 async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
+  //condición para ver si el slug se encuentra en los wishlist courses del usuario
+  console.log(user, 'user');
+  const duplicatedCourses = user.wishlistCourses.filter(
+    (course) => slug === course.slug
+  );
+  console.log(duplicatedCourses, 'duplicated');
+  if (duplicatedCourses.length) {
+    try {
+      const userId = user.id;
+      const result = await axios.delete(
+        `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
+      );
+      if (result) {
+        return fetchUser(setUser, featuredCourses);
+      }
+      //TODO
+      //Cambiar botón "buy now" to "go to course"
+      console.log(result, "result");
+    } catch (error) {}
+  }
   try {
     const propPrefix = "wishlistCourse";
-    const userId = "user01";
+    const userId = user.id;
     const result = await axios.patch(`/Users/${userId}/wishlistCourses.json`, {
       [propPrefix + user.wishlistCourses.length]: slug,
     });
@@ -47,11 +75,29 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
       fetchUser(setUser, featuredCourses);
     }
     //TODO
-    //Hacer que la ruta tome el usuario actual dinámicamente
-    //Actualizar el usuario con los cursos en el tab de wishlist
-    //Agregar la lógica para cuando un curso ya ha sido wishliteado
+    //Agregar función para eliminar curso de wishlist
     //Cambiar botón "buy now" to "go to course"
     console.log(result, "result");
+  } catch (error) {}
+}
+
+async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
+  //condición para ver si el slug se encuentra en los wishlist courses del usuario
+  const duplicatedCourses = user.myCourses.filter(
+    (course) => slug === course.slug
+  );
+  if (duplicatedCourses.length) {
+    return;
+  }
+  try {
+    const propPrefix = "myCourse";
+    const userId = user.id;
+    const result = await axios.patch(`/Users/${userId}/myCourses.json`, {
+      [propPrefix + user.myCourses.length]: slug,
+    });
+    if (result) {
+      fetchUser(setUser, featuredCourses);
+    }
   } catch (error) {}
 }
 
@@ -119,6 +165,7 @@ function App() {
               user={user}
               setUser={setUser}
               addCourseToWishlist={addCourseToWishlist}
+              addCourseToAllCourses={addCourseToAllCourses}
             />
           </Route>
           <Route
