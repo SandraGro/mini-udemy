@@ -74,9 +74,6 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
     if (result) {
       fetchUser(setUser, featuredCourses);
     }
-    //TODO
-    //Agregar función para eliminar curso de wishlist
-    //Cambiar botón "buy now" to "go to course"
     console.log(result, "result");
   } catch (error) {}
 }

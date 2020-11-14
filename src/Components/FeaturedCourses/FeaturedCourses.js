@@ -33,7 +33,9 @@ class FeaturedCourses extends Component {
           <p>Loading ...!</p>
         ) : (
           <Courses
-            featuredCourses={this.props.filteredCourses[this.state.activeCategory]}
+            featuredCourses={
+              this.props.filteredCourses[this.state.activeCategory]
+            }
           />
         )}
       </>

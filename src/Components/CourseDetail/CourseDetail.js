@@ -32,6 +32,9 @@ function CourseDetail(props) {
   if (!featureCourse) {
     return <p>Loading...</p>;
   }
+  const courseIsBought = () => {
+    return props.user.myCourses.find((course) => course.slug === courseSlug);
+  };
   return (
     <>
       <div className="sidebar-container">
@@ -46,6 +49,7 @@ function CourseDetail(props) {
             <Button className="card-button" variant="danger">
               Add to cart
             </Button>
+            {props.user.myCourses && !courseIsBought() ? (
             <Button
               className="card-button"
               variant="outline-success"
@@ -53,12 +57,21 @@ function CourseDetail(props) {
             >
               Buy now
             </Button>
+            ) : (
+            <Button
+              className="card-button"
+              variant="outline-primary"
+              onClick={() => console.log('going to course')}
+            >
+              Go to course
+            </Button>
+            )}
           </Card.Body>
         </Card>
         <Modal show={isOpenBuyModal} onHide={() => setIsOpenBuyModal(false)}>
           <Modal.Header closeButton>
             <Modal.Title id="example-modal-sizes-title-lg">
-              Payment completed!
+              Payment information
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
@@ -76,15 +89,19 @@ function CourseDetail(props) {
             </Container>
           </Modal.Body>
           <Modal.Footer>
-            <Button onClick={() => {
-              setIsOpenBuyModal(false)
-              props.addCourseToAllCourses(
-                courseSlug,
-                props.user,
-                props.setUser,
-                props.featuredCourses
-              )
-            }}>Continue</Button>
+            <Button
+              onClick={() => {
+                setIsOpenBuyModal(false);
+                props.addCourseToAllCourses(
+                  courseSlug,
+                  props.user,
+                  props.setUser,
+                  props.featuredCourses
+                );
+              }}
+            >
+              Complete Order
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>
