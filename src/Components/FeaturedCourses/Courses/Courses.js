@@ -3,31 +3,66 @@ import {
   Card,
   Badge,
   CardDeck,
-  OverlayTrigger,
+  Overlay,
   Popover,
+  Button,
 } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as icons from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "./Courses.scss";
 
 class Courses extends Component {
+  constructor() {
+    super();
+    this.overlayRef = [];
+    this.state = {
+      show: {},
+    };
+  }
   render() {
     return (
       <>
         <CardDeck>
           {this.props.featuredCourses.map((course, index) => (
-            <OverlayTrigger
-              key={`cardDeck-${index}`}
-              placement="right"
-              overlay={
-                <Popover id={`tooltip-${index}`}>
-                <Popover.Title as="h3">Popover bottom</Popover.Title>
-                <Popover.Content>
-                  <strong>Holy guacamole!</strong> Check this info.
-                </Popover.Content>
-              </Popover>
-              }
-            >
-              <Card className="course-card">
+            <div key={`cardDeck-${index}`}>
+              <Overlay
+                target={this.overlayRef[`overlay-${index}`]}
+                placement="right"
+                show={this.state.show[`overlay-${index}`]}
+              >
+                <Popover onMouseLeave={() => {
+                  this.setState({ show: { [`overlay-${index}`]: false } });
+                }} id={`tooltip-${index}`}>
+                  <Popover.Title as="h3">{course.title}</Popover.Title>
+                  {course.bestseller ? (
+                    <Badge variant="warning">Bestseller</Badge>
+                  ) : (
+                    ""
+                  )}
+                  <div>{course.description}</div>
+                  <Popover.Content>
+                    <Button
+                      className="card-button"
+                      variant="outline-danger"
+                      d-inline="true"
+                    >
+                      Add to cart
+                    </Button>
+                    <Button className="mr-1 mt-2" variant="outline-success">
+                      <FontAwesomeIcon icon={icons.faHeart} />
+                    </Button>
+                  </Popover.Content>
+                </Popover>
+              </Overlay>
+              <Card
+                ref={(el) => (this.overlayRef[`overlay-${index}`] = el)}
+                onMouseEnter={() => {
+                  this.setState({ show: { [`overlay-${index}`]: true } });
+                  console.log(this.state.show[`overlay-${index}`], "state");
+                }}
+                className="course-card"
+              >
                 <Link to={`/course/${course.slug}`}>
                   <Card.Img variant="top" src={course.thumbnail} />
                   <Card.Body>
@@ -43,7 +78,7 @@ class Courses extends Component {
                   </Card.Body>
                 </Link>
               </Card>
-            </OverlayTrigger>
+            </div>
           ))}
         </CardDeck>
       </>

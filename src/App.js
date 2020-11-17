@@ -18,7 +18,9 @@ async function fetchUser(setUser, featuredCourses) {
         (user) => user.username === "Sandra"
       )[0];
       // Definición de arreglos con los slugs
+      console.log(user);
       let wishlistSlugs = Object.entries(user.wishlistCourses);
+      console.log(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
       setUser({
         //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
@@ -26,14 +28,14 @@ async function fetchUser(setUser, featuredCourses) {
         myCourses: myCoursesSlugs.map(([id, slug]) => {
           let course = {
             ...featuredCourses.filter((course) => course.slug === slug)[0],
-            id:id,
+            id: id,
           };
           return course;
         }),
         wishlistCourses: wishlistSlugs.map(([id, slug]) => {
           let course = {
             ...featuredCourses.filter((course) => course.slug === slug)[0],
-            id:id,
+            id: id,
           };
           return course;
         }),
@@ -45,12 +47,12 @@ async function fetchUser(setUser, featuredCourses) {
 }
 
 async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
+  console.log(user.wishlistCourses, "user");
   //condición para ver si el slug se encuentra en los wishlist courses del usuario
-  console.log(user, 'user');
   const duplicatedCourses = user.wishlistCourses.filter(
     (course) => slug === course.slug
   );
-  console.log(duplicatedCourses, 'duplicated');
+  console.log(duplicatedCourses, "duplicated");
   if (duplicatedCourses.length) {
     try {
       const userId = user.id;
@@ -69,7 +71,7 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
     const propPrefix = "wishlistCourse";
     const userId = user.id;
     const result = await axios.patch(`/Users/${userId}/wishlistCourses.json`, {
-      [propPrefix + user.wishlistCourses.length]: slug,
+      [propPrefix + (user.wishlistCourses.length + 1)]: slug,
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
