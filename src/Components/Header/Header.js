@@ -7,9 +7,11 @@ import {
   FormControl,
   NavDropdown,
   Button,
+  Badge,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import * as alternativeIcons from '@fortawesome/free-regular-svg-icons'
 import * as icons from '@fortawesome/free-solid-svg-icons';
 
 class Header extends Component {
@@ -63,7 +65,11 @@ class Header extends Component {
           <Link className="mx-3 d-block" to="/teaching">Teach on Udemyx </Link>
           <Link className="mx-3 d-block" to="/mycourses/learning">My courses</Link>
           <Link className="mx-3 d-block" to="/mycourses/wishlist">
-            <FontAwesomeIcon icon={icons.faHeart} />
+            <FontAwesomeIcon icon={alternativeIcons.faHeart} />
+          </Link>
+          <Link className="mx-3 d-block" to="/cart">
+            <FontAwesomeIcon icon={icons.faShoppingCart} />
+            <Badge variant="danger">9</Badge>
           </Link>
           <Button className="ml-2" variant="outline-success">Log in</Button>
           <Button className="ml-2" variant="success">Sign up</Button>

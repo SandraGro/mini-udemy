@@ -37,6 +37,7 @@ class MyCourses extends Component {
           <p>Loading ...!</p>
         ) : (
           <Courses
+            displayOverlay = {false}
             featuredCourses={this.props.user[coursesToDisplay]}
           />
         )}

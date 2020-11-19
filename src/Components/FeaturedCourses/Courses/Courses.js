@@ -25,15 +25,18 @@ class Courses extends Component {
       <>
         <CardDeck>
           {this.props.featuredCourses.map((course, index) => (
-            <div key={`cardDeck-${index}`}>
+            <div className="card-wrapper" key={`cardDeck-${index}`}>
               <Overlay
                 target={this.overlayRef[`overlay-${index}`]}
                 placement="right"
-                show={this.state.show[`overlay-${index}`]}
+                show={this.state.show[`overlay-${index}`] && this.props.displayOverlay}
               >
-                <Popover onMouseLeave={() => {
-                  this.setState({ show: { [`overlay-${index}`]: false } });
-                }} id={`tooltip-${index}`}>
+                <Popover
+                  onMouseLeave={() => {
+                    this.setState({ show: { [`overlay-${index}`]: false } });
+                  }}
+                  id={`tooltip-${index}`}
+                >
                   <Popover.Title as="h3">{course.title}</Popover.Title>
                   {course.bestseller ? (
                     <Badge variant="warning">Bestseller</Badge>
@@ -49,7 +52,18 @@ class Courses extends Component {
                     >
                       Add to cart
                     </Button>
-                    <Button className="mr-1 mt-2" variant="outline-success">
+                    <Button
+                      className="mr-1 mt-2"
+                      variant="outline-success"
+                      onClick={() =>
+                        this.props.addCourseToWishlist(
+                          course.slug,
+                          this.props.user,
+                          this.props.setUser,
+                          this.props.courses
+                        )
+                      }
+                    >
                       <FontAwesomeIcon icon={icons.faHeart} />
                     </Button>
                   </Popover.Content>

@@ -62,8 +62,6 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
       if (result) {
         return fetchUser(setUser, featuredCourses);
       }
-      //TODO
-      //Cambiar botón "buy now" to "go to course"
       console.log(result, "result");
     } catch (error) {}
   }
@@ -185,7 +183,13 @@ function App() {
             <Banner />
             <BenefitsContainer />
             <hr></hr>
-            <FeaturedCourses filteredCourses={filteredCourses} />
+            <FeaturedCourses
+              filteredCourses={filteredCourses}
+              featuredCourses={featuredCourses}
+              user={user}
+              setUser={setUser}
+              addCourseToWishlist={addCourseToWishlist}
+            />
           </Route>
         </Switch>
       </Layout>

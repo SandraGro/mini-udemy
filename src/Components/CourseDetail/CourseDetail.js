@@ -46,7 +46,7 @@ function CourseDetail(props) {
           <Card.Body>
             <Card.Title>${featureCourse.discountedPrice} </Card.Title>
             <Card.Text>${featureCourse.originalPrice}</Card.Text>
-            <Button className="card-button" variant="danger">
+            <Button className="card-button" variant="danger" onClick={console.log('ya lo agregué')}>
               Add to cart
             </Button>
             {props.user.myCourses && !courseIsBought() ? (

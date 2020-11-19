@@ -33,9 +33,14 @@ class FeaturedCourses extends Component {
           <p>Loading ...!</p>
         ) : (
           <Courses
+            displayOverlay={true}
             featuredCourses={
               this.props.filteredCourses[this.state.activeCategory]
             }
+            courses={this.props.featuredCourses}
+            user={this.props.user}
+            setUser={this.props.setUser}
+            addCourseToWishlist={this.props.addCourseToWishlist}
           />
         )}
       </>
