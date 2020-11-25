@@ -46,25 +46,36 @@ function CourseDetail(props) {
           <Card.Body>
             <Card.Title>${featureCourse.discountedPrice} </Card.Title>
             <Card.Text>${featureCourse.originalPrice}</Card.Text>
-            <Button className="card-button" variant="danger" onClick={console.log('ya lo agregué')}>
+            <Button
+              className="card-button"
+              variant="danger"
+              onClick={() =>
+                props.addCourseToCart(
+                  courseSlug,
+                  props.user,
+                  props.setUser,
+                  props.featuredCourses
+                )
+              }
+            >
               Add to cart
             </Button>
             {props.user.myCourses && !courseIsBought() ? (
-            <Button
-              className="card-button"
-              variant="outline-success"
-              onClick={() => setIsOpenBuyModal(true)}
-            >
-              Buy now
-            </Button>
+              <Button
+                className="card-button"
+                variant="outline-success"
+                onClick={() => setIsOpenBuyModal(true)}
+              >
+                Buy now
+              </Button>
             ) : (
-            <Button
-              className="card-button"
-              variant="outline-primary"
-              onClick={() => console.log('going to course')}
-            >
-              Go to course
-            </Button>
+              <Button
+                className="card-button"
+                variant="outline-primary"
+                onClick={() => console.log("going to course")}
+              >
+                Go to course
+              </Button>
             )}
           </Card.Body>
         </Card>

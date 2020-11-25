@@ -22,6 +22,8 @@ async function fetchUser(setUser, featuredCourses) {
       let wishlistSlugs = Object.entries(user.wishlistCourses);
       console.log(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
+      let cartSlugs = Object.entries(user.cart).filter(item => (item[1] !== ""));
+      console.log(cartSlugs, "cartslugs");
       setUser({
         //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
         ...user,
@@ -33,6 +35,13 @@ async function fetchUser(setUser, featuredCourses) {
           return course;
         }),
         wishlistCourses: wishlistSlugs.map(([id, slug]) => {
+          let course = {
+            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            id: id,
+          };
+          return course;
+        }),
+        cart: cartSlugs.map(([id, slug]) => {
           let course = {
             ...featuredCourses.filter((course) => course.slug === slug)[0],
             id: id,
@@ -98,6 +107,33 @@ async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
   } catch (error) {}
 }
 
+async function addCourseToCart(slug, user, setUser, featuredCourses) {
+  //condición para ver si el slug se encuentra en los wishlist courses del usuario
+  console.log(user, "user");
+  const duplicatedCourses = user.cart.filter((course) => slug === course.slug);
+  if (duplicatedCourses.length) {
+    try {
+      const userId = user.id;
+      const result = await axios.delete(
+        `Users/${userId}/cart/${duplicatedCourses[0].id}.json`
+      );
+      if (result) {
+        return fetchUser(setUser, featuredCourses);
+      }
+    } catch (error) {}
+  }
+  try {
+    const propPrefix = "cart";
+    const userId = user.id;
+    const result = await axios.patch(`/Users/${userId}/cart.json`, {
+      [propPrefix + (user.cart.length + 1)]: slug,
+    });
+    if (result) {
+      fetchUser(setUser, featuredCourses);
+    }
+  } catch (error) {}
+}
+
 function App() {
   const [featuredCourses, setFeatureCourses] = useState([]);
   const [user, setUser] = useState({});
@@ -139,7 +175,7 @@ function App() {
   const filteredCourses = sortByCategory(featuredCourses);
   return (
     <Router>
-      <Layout featuredCourses={featuredCourses}>
+      <Layout user={user} featuredCourses={featuredCourses}>
         <Switch>
           {
             // Access to params using match property of the Route (similar to useParams hook)
@@ -163,6 +199,7 @@ function App() {
               setUser={setUser}
               addCourseToWishlist={addCourseToWishlist}
               addCourseToAllCourses={addCourseToAllCourses}
+              addCourseToCart={addCourseToCart}
             />
           </Route>
           <Route

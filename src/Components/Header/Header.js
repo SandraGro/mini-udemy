@@ -69,7 +69,7 @@ class Header extends Component {
           </Link>
           <Link className="mx-3 d-block" to="/cart">
             <FontAwesomeIcon icon={icons.faShoppingCart} />
-            <Badge variant="danger">9</Badge>
+            <Badge variant="danger">{this.props.user.cart ? this.props.user.cart.length : ""}</Badge>
           </Link>
           <Button className="ml-2" variant="outline-success">Log in</Button>
           <Button className="ml-2" variant="success">Sign up</Button>
