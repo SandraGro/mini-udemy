@@ -9,6 +9,7 @@ import axios from "./axios-intance";
 import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory";
 import MyCourses from "./Components/MyCourses/MyCourses";
 import InfoTemplate from "./Components/InfoTemplates/InfoTemplate";
+import Cart from "./Components/Cart/Cart";
 
 async function fetchUser(setUser, featuredCourses) {
   try {
@@ -22,7 +23,9 @@ async function fetchUser(setUser, featuredCourses) {
       let wishlistSlugs = Object.entries(user.wishlistCourses);
       console.log(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
-      let cartSlugs = Object.entries(user.cart).filter(item => (item[1] !== ""));
+      let cartSlugs = Object.entries(user.cart).filter(
+        (item) => item[1] !== ""
+      );
       console.log(cartSlugs, "cartslugs");
       setUser({
         //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
@@ -130,6 +133,7 @@ async function addCourseToCart(slug, user, setUser, featuredCourses) {
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
+      console.log(result, 'result');
     }
   } catch (error) {}
 }
@@ -212,6 +216,9 @@ function App() {
               />
             )}
           ></Route>
+          <Route path="/cart">
+            <Cart user={user} featuredCourses={featuredCourses} />
+          </Route>
           <Route
             path="/:genericSection"
             render={() => <InfoTemplate />}
@@ -226,6 +233,7 @@ function App() {
               user={user}
               setUser={setUser}
               addCourseToWishlist={addCourseToWishlist}
+              addCourseToCart={addCourseToCart}
             />
           </Route>
         </Switch>

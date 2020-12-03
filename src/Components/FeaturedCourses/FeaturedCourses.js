@@ -41,6 +41,8 @@ class FeaturedCourses extends Component {
             user={this.props.user}
             setUser={this.props.setUser}
             addCourseToWishlist={this.props.addCourseToWishlist}
+            addCourseToCart={this.props.addCourseToCart}
+
           />
         )}
       </>

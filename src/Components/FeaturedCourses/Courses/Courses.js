@@ -21,15 +21,16 @@ class Courses extends Component {
     };
   }
   render() {
+    console.log(this.props.user, "useeeeer");
     return (
       <>
         <CardDeck>
           {this.props.featuredCourses.map((course, index) => (
-            <div className="card-wrapper" key={`cardDeck-${index}`}>
+            <div key={`cardDeck-${index}`}>
               <Overlay
                 target={this.overlayRef[`overlay-${index}`]}
                 placement="right"
-                show={this.state.show[`overlay-${index}`] && this.props.displayOverlay}
+                show={this.state.show[`overlay-${index}`]}
               >
                 <Popover
                   onMouseLeave={() => {
@@ -48,6 +49,14 @@ class Courses extends Component {
                     <Button
                       className="card-button"
                       variant="outline-danger"
+                      onClick={() =>
+                        this.props.addCourseToCart(
+                          course.slug,
+                          this.props.user,
+                          this.props.setUser,
+                          this.props.featuredCourses
+                        )
+                      }
                       d-inline="true"
                     >
                       Add to cart
@@ -57,7 +66,6 @@ class Courses extends Component {
                       variant="outline-success"
                       onClick={() =>
                         this.props.addCourseToWishlist(
-                          course.slug,
                           this.props.user,
                           this.props.setUser,
                           this.props.courses
