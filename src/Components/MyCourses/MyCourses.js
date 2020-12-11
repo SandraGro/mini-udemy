@@ -39,6 +39,7 @@ class MyCourses extends Component {
           <Courses
             displayOverlay = {false}
             featuredCourses={this.props.user[coursesToDisplay]}
+            courses={this.props.featuredCourses}
           />
         )}
       </>

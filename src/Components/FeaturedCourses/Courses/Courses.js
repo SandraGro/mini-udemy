@@ -54,7 +54,7 @@ class Courses extends Component {
                           course.slug,
                           this.props.user,
                           this.props.setUser,
-                          this.props.featuredCourses
+                          this.props.courses
                         )
                       }
                       d-inline="true"

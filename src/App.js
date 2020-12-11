@@ -46,7 +46,7 @@ async function fetchUser(setUser, featuredCourses) {
         }),
         cart: cartSlugs.map(([id, slug]) => {
           let course = {
-            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            ...featuredCourses.find((course) => course.slug === slug),
             id: id,
           };
           return course;
@@ -110,6 +110,10 @@ async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
   } catch (error) {}
 }
 
+function generateRandomHash (propPrefix) {
+  return `${propPrefix}-${Math.round(Math.random()*10000)}`
+}
+
 async function addCourseToCart(slug, user, setUser, featuredCourses) {
   //condición para ver si el slug se encuentra en los wishlist courses del usuario
   console.log(user, "user");
@@ -129,7 +133,7 @@ async function addCourseToCart(slug, user, setUser, featuredCourses) {
     const propPrefix = "cart";
     const userId = user.id;
     const result = await axios.patch(`/Users/${userId}/cart.json`, {
-      [propPrefix + (user.cart.length + 1)]: slug,
+      [generateRandomHash(propPrefix)]: slug,
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
