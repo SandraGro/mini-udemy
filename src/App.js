@@ -18,14 +18,12 @@ async function fetchUser(setUser, featuredCourses) {
       let user = Object.values(users.data).filter(
         (user) => user.username === "Sandra"
       )[0];
-      // Definición de arreglos con los slugs
       let wishlistSlugs = Object.entries(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
       let cartSlugs = Object.entries(user.cart).filter(
         (item) => item[1] !== ""
       );
       setUser({
-        //Copia el usuario y sobreescribe las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
         ...user,
         myCourses: myCoursesSlugs.map(([id, slug]) => {
           let course = {
@@ -56,12 +54,9 @@ async function fetchUser(setUser, featuredCourses) {
 }
 
 async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
-  console.log(user.wishlistCourses, "user");
-  //condición para ver si el slug se encuentra en los wishlist courses del usuario
   const duplicatedCourses = user.wishlistCourses.filter(
     (course) => slug === course.slug
   );
-  console.log(duplicatedCourses, "duplicated");
   if (duplicatedCourses.length) {
     try {
       const userId = user.id;
@@ -71,7 +66,6 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
       if (result) {
         return fetchUser(setUser, featuredCourses);
       }
-      console.log(result, "result");
     } catch (error) {}
   }
   try {
@@ -83,7 +77,6 @@ async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
     if (result) {
       fetchUser(setUser, featuredCourses);
     }
-    console.log(result, "result");
   } catch (error) {}
 }
 
@@ -112,8 +105,6 @@ function generateRandomHash(propPrefix) {
 }
 
 async function addCourseToCart(slug, user, setUser, featuredCourses) {
-  //condición para ver si el slug se encuentra en los wishlist courses del usuario
-  console.log(user, "user");
   const duplicatedCourses = user.cart.filter((course) => slug === course.slug);
   if (duplicatedCourses.length) {
     try {
@@ -134,7 +125,6 @@ async function addCourseToCart(slug, user, setUser, featuredCourses) {
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
-      console.log(result, "result");
     }
   } catch (error) {}
 }
@@ -218,12 +208,7 @@ function App() {
             )}
           ></Route>
           <Route path="/cart">
-            <Cart
-              user={user}
-              setUser={setUser}
-              featuredCourses={featuredCourses}
-              addCourseToCart={addCourseToCart}
-            />
+            <Cart user={user} featuredCourses={featuredCourses} />
           </Route>
           <Route
             path="/:genericSection"
