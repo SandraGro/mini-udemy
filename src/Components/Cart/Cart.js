@@ -1,61 +1,180 @@
-import React from "react";
-import { Badge, Container, Card, Col, Row } from "react-bootstrap";
-import ReactStars from "react-rating-stars-component";
+import React, { useState, useEffect } from "react";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import "./Cart.scss";
 
 function Cart(props) {
-  console.log(props.user.cart, "courses in cart");
+  const [totalPrice, setTotalPrice] = useState(null);
+  const [saveForLaterList, setSaveForLaterList] = useState([]);
+  useEffect(() => {
+    if (props.user.cart) {
+      setTotalPrice(
+        props.user.cart.reduce((total, course) => {
+          return (
+            total + parseInt(course.discountedPrice || course.originalPrice)
+          );
+        }, 0)
+      );
+    }
+  }, [props.user.cart]);
   return (
     <>
-      {!props.user.cart || !props.user.cart.length ? (
-        <p>Your cart is empty. Keep shopping to find a course!</p>
-      ) : (
-        props.user.cart.map((course, index) => (
-          <Container key={`courseItem-${index}`}>
-            <Row>
-              <Col>
-                <Link className="container" to={`/course/${course.slug}`}>
-                  <Card.Img
-                    variant="top"
-                    src={course.thumbnail}
-                    className="images"
-                  />
-                  <div className="card-item">
-                    <h5 className="card-title">{course.title}</h5>
-                    <div>
-                      <span className="price">${course.discountedPrice} </span>
-                      <span className="price">${course.originalPrice} </span>
+      <Container>
+        {props.user.cart ? (
+          <p> {props.user.cart.length} courses in cart</p>
+        ) : (
+          ""
+        )}
+        <Row>
+          {!props.user.cart || !props.user.cart.length ? (
+            <p>Your cart is empty. Keep shopping to find a course!</p>
+          ) : (
+            props.user.cart.map((course, index) => (
+              <Col key={`courseItem-${index}`} sm={9}>
+                <div className="container">
+                  <Link to={`/course/${course.slug}`}>
+                    <img
+                      alt=""
+                      src={course.thumbnail}
+                      className="images thumbnail"
+                    />
+                    <div className="card-item card-content">
+                      <h5 className="card-title">{course.title}</h5>
+                      <div>
+                        <small>{course.author} </small>
+                      </div>
                     </div>
-                    <div>
-                      <small>{course.author} </small>
-                    </div>
-                    <div className="rating-container">
-                      <span> {course.rating} </span>
-                      <ReactStars
-                        className="rating"
-                        count={5}
-                        onChange="5"
-                        size={14}
-                        activeColor="#ffd700"
-                      />
-                      <small>({course.reviews})</small>
-                    </div>
-                    <div>
-                      <span title="Source Title">{course.description}</span>
-                    </div>
-                    {course.bestseller ? (
-                      <Badge variant="warning">Bestseller</Badge>
-                    ) : (
-                      ""
-                    )}
+                  </Link>
+                  <div>
+                    <span>
+                      <Button
+                        className="link-button"
+                        onClick={() =>
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          )
+                        }
+                      >
+                        Remove
+                      </Button>
+                      <Button
+                        className="link-button"
+                        onClick={() => {
+                          setSaveForLaterList([...saveForLaterList, course]);
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
+                        }}
+                      >
+                        Save for later
+                      </Button>
+                      <Button
+                        className="link-button"
+                        onClick={() => console.log("button was clicked")}
+                      >
+                        Move to wishlist
+                      </Button>
+                    </span>
                   </div>
-                </Link>
+                  <Link className="container" to={`/course/${course.slug}`}>
+                    <div className="price">
+                      <p>${course.originalPrice} </p>
+                      <p>${course.discountedPrice} </p>
+                    </div>
+                  </Link>
+                </div>
+                <hr />
               </Col>
-              <Col></Col>
-            </Row>
-          </Container>
-        ))
-      )}
+            ))
+          )}
+          <Col sm={3}>
+            <h5>Total:</h5>
+            {props.user.cart ? (
+              <h1>{totalPrice}</h1>
+            ) : (
+              <h1> There are no courses in the cart</h1>
+            )}
+            <Button variant="danger" size="lg" block>
+              Checkout
+            </Button>
+          </Col>
+        </Row>
+      </Container>
+      <Container>
+        <p>Saved for later</p>
+        <Row>
+          {!saveForLaterList.length ? (
+            <p>You haven't saved any courses for later.</p>
+          ) : (
+            saveForLaterList.map((course, index) => (
+              <Col key={`courseItem-${index}`} sm={9}>
+                <div className="container">
+                  <Link to={`/course/${course.slug}`}>
+                    <img
+                      alt=""
+                      src={course.thumbnail}
+                      className="images thumbnail"
+                    />
+                    <div className="card-item card-content">
+                      <h5 className="card-title">{course.title}</h5>
+                      <div>
+                        <small>{course.author} </small>
+                      </div>
+                    </div>
+                  </Link>
+                  <div>
+                    <span>
+                      <Button
+                        className="link-button"
+                        onClick={() =>
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          )
+                        }
+                      >
+                        Remove
+                      </Button>
+                      <Button
+                        className="link-button"
+                        onClick={() => {
+                          setSaveForLaterList(saveForLaterList.filter(courseItem => courseItem.slug !== course.slug));
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
+                        }}
+                      >
+                        Move to cart
+                      </Button>
+                    </span>
+                  </div>
+                  <Link className="container" to={`/course/${course.slug}`}>
+                    <div className="price">
+                      <p>${course.originalPrice} </p>
+                      <p>${course.discountedPrice} </p>
+                    </div>
+                  </Link>
+                </div>
+                <hr />
+              </Col>
+            ))
+          )}
+        </Row>
+      </Container>
+      <Container>
+        <p>Recently wishlisted</p>
+      </Container>
     </>
   );
 }

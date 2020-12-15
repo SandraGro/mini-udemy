@@ -21,7 +21,6 @@ class Courses extends Component {
     };
   }
   render() {
-    console.log(this.props.user, "useeeeer");
     return (
       <>
         <CardDeck>
@@ -81,7 +80,6 @@ class Courses extends Component {
                 ref={(el) => (this.overlayRef[`overlay-${index}`] = el)}
                 onMouseEnter={() => {
                   this.setState({ show: { [`overlay-${index}`]: true } });
-                  console.log(this.state.show[`overlay-${index}`], "state");
                 }}
                 className="course-card"
               >

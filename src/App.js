@@ -19,16 +19,13 @@ async function fetchUser(setUser, featuredCourses) {
         (user) => user.username === "Sandra"
       )[0];
       // Definición de arreglos con los slugs
-      console.log(user);
       let wishlistSlugs = Object.entries(user.wishlistCourses);
-      console.log(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
       let cartSlugs = Object.entries(user.cart).filter(
         (item) => item[1] !== ""
       );
-      console.log(cartSlugs, "cartslugs");
       setUser({
-        //Copia del usuario y sobreescribir las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
+        //Copia el usuario y sobreescribe las propiedades con el nuevo arreglo de los elementros filtrados correspondiente al objeto del curso con las propiedades completas.
         ...user,
         myCourses: myCoursesSlugs.map(([id, slug]) => {
           let course = {
@@ -110,8 +107,8 @@ async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
   } catch (error) {}
 }
 
-function generateRandomHash (propPrefix) {
-  return `${propPrefix}-${Math.round(Math.random()*10000)}`
+function generateRandomHash(propPrefix) {
+  return `${propPrefix}-${Math.round(Math.random() * 10000)}`;
 }
 
 async function addCourseToCart(slug, user, setUser, featuredCourses) {
@@ -137,7 +134,7 @@ async function addCourseToCart(slug, user, setUser, featuredCourses) {
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
-      console.log(result, 'result');
+      console.log(result, "result");
     }
   } catch (error) {}
 }
@@ -221,7 +218,12 @@ function App() {
             )}
           ></Route>
           <Route path="/cart">
-            <Cart user={user} featuredCourses={featuredCourses} />
+            <Cart
+              user={user}
+              setUser={setUser}
+              featuredCourses={featuredCourses}
+              addCourseToCart={addCourseToCart}
+            />
           </Route>
           <Route
             path="/:genericSection"
