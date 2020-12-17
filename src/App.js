@@ -203,7 +203,9 @@ function App() {
               <MyCourses
                 featuredCourses={featuredCourses}
                 user={user}
+                setUser={setUser}
                 activeSection={match.params.subsection}
+                addCourseToCart={addCourseToCart}
               />
             )}
           ></Route>

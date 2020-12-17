@@ -6,6 +6,7 @@ import "./Cart.scss";
 function Cart(props) {
   const [totalPrice, setTotalPrice] = useState(null);
   const [saveForLaterList, setSaveForLaterList] = useState([]);
+  const [recentlyWishlisted, setRecentlyWishlisted] = useState([]);
   useEffect(() => {
     if (props.user.cart) {
       setTotalPrice(
@@ -76,7 +77,15 @@ function Cart(props) {
                       </Button>
                       <Button
                         className="link-button"
-                        onClick={() => console.log("button was clicked")}
+                        onClick={() => {
+                          setRecentlyWishlisted([...recentlyWishlisted, course]);
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
+                        }}
                       >
                         Move to wishlist
                       </Button>
@@ -133,12 +142,7 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() =>
-                          props.addCourseToCart(
-                            course.slug,
-                            props.user,
-                            props.setUser,
-                            props.featuredCourses
-                          )
+                          setSaveForLaterList(saveForLaterList.filter(courseItem => courseItem.slug !== course.slug))
                         }
                       >
                         Remove
@@ -174,6 +178,64 @@ function Cart(props) {
       </Container>
       <Container>
         <p>Recently wishlisted</p>
+        <Row>
+          {!recentlyWishlisted.length ? (
+            <p>You haven't added any courses to your wishlist.</p>
+          ) : (
+            recentlyWishlisted.map((course, index) => (
+              <Col key={`courseItem-${index}`} sm={9}>
+                <div className="container">
+                  <Link to={`/course/${course.slug}`}>
+                    <img
+                      alt=""
+                      src={course.thumbnail}
+                      className="images thumbnail"
+                    />
+                    <div className="card-item card-content">
+                      <h5 className="card-title">{course.title}</h5>
+                      <div>
+                        <small>{course.author} </small>
+                      </div>
+                    </div>
+                  </Link>
+                  <div>
+                    <span>
+                      <Button
+                        className="link-button"
+                        onClick={() =>
+                          setRecentlyWishlisted(recentlyWishlisted.filter(courseItem => courseItem.slug !== course.slug))
+                        }
+                      >
+                        Remove
+                      </Button>
+                      <Button
+                        className="link-button"
+                        onClick={() => {
+                          setRecentlyWishlisted(recentlyWishlisted.filter(courseItem => courseItem.slug !== course.slug));
+                          props.addCourseToCart(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
+                        }}
+                      >
+                        Move to cart
+                      </Button>
+                    </span>
+                  </div>
+                  <Link className="container" to={`/course/${course.slug}`}>
+                    <div className="price">
+                      <p>${course.originalPrice} </p>
+                      <p>${course.discountedPrice} </p>
+                    </div>
+                  </Link>
+                </div>
+                <hr />
+              </Col>
+            ))
+          )}
+        </Row>
       </Container>
     </>
   );

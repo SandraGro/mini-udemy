@@ -49,12 +49,13 @@ class Courses extends Component {
                       className="card-button"
                       variant="outline-danger"
                       onClick={() =>
+                        {console.log(this.props);
                         this.props.addCourseToCart(
                           course.slug,
                           this.props.user,
                           this.props.setUser,
                           this.props.courses
-                        )
+                        )}
                       }
                       d-inline="true"
                     >
