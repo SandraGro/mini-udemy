@@ -218,12 +218,7 @@ function App() {
             )}
           ></Route>
           <Route path="/cart">
-            <Cart
-              user={user}
-              setUser={setUser}
-              featuredCourses={featuredCourses}
-              addCourseToCart={addCourseToCart}
-            />
+            <Cart user={user} setUser={setUser} featuredCourses={featuredCourses} addCourseToCart={addCourseToCart}/>
           </Route>
           <Route
             path="/:genericSection"
