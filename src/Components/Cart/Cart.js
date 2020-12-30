@@ -5,8 +5,6 @@ import "./Cart.scss";
 
 function Cart(props) {
   const [totalPrice, setTotalPrice] = useState(null);
-  const [saveForLaterList, setSaveForLaterList] = useState([]);
-  const [recentlyWishlisted, setRecentlyWishlisted] = useState([]);
   useEffect(() => {
     if (props.user.cart) {
       setTotalPrice(
@@ -64,7 +62,12 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() => {
-                          setSaveForLaterList([...saveForLaterList, course]);
+                          props.addCourseToSaveforLaterList(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
                           props.addCourseToCart(
                             course.slug,
                             props.user,
@@ -78,14 +81,14 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() => {
-                          console.log(props.user.wishlistCourses, 'user')
+                          console.log(props.user.wishlistCourses, "user");
                           props.addCourseToWishlist(
                             course.slug,
                             props.user,
                             props.setUser,
                             props.featuredCourses,
                             false
-                          )
+                          );
                           props.addCourseToCart(
                             course.slug,
                             props.user,
@@ -125,10 +128,10 @@ function Cart(props) {
       <Container>
         <p>Saved for later</p>
         <Row>
-          {!saveForLaterList.length ? (
+          {!(props.user.laterListCourses && props.user.laterListCourses.length) ? (
             <p>You haven't saved any courses for later.</p>
           ) : (
-            saveForLaterList.map((course, index) => (
+            props.user.laterListCourses.map((course, index) => (
               <Col key={`courseItem-${index}`} sm={9}>
                 <div className="container">
                   <Link to={`/course/${course.slug}`}>
@@ -149,7 +152,12 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() =>
-                          setSaveForLaterList(saveForLaterList.filter(courseItem => courseItem.slug !== course.slug))
+                          props.addCourseToSaveforLaterList(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          )
                         }
                       >
                         Remove
@@ -157,7 +165,12 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() => {
-                          setSaveForLaterList(saveForLaterList.filter(courseItem => courseItem.slug !== course.slug));
+                          props.addCourseToSaveforLaterList(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          );
                           props.addCourseToCart(
                             course.slug,
                             props.user,
@@ -186,7 +199,9 @@ function Cart(props) {
       <Container>
         <p>Recently wishlisted</p>
         <Row>
-          {!(props.user.wishlistCourses && props.user.wishlistCourses.length) ? (
+          {!(
+            props.user.wishlistCourses && props.user.wishlistCourses.length
+          ) ? (
             <p>You haven't added any courses to your wishlist.</p>
           ) : (
             props.user.wishlistCourses.map((course, index) => (
@@ -227,7 +242,7 @@ function Cart(props) {
                             course.slug,
                             props.user,
                             props.setUser,
-                            props.featuredCourses,
+                            props.featuredCourses
                           );
                           props.addCourseToCart(
                             course.slug,

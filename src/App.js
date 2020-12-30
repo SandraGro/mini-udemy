@@ -19,6 +19,8 @@ async function fetchUser(setUser, featuredCourses) {
         (user) => user.username === "Sandra"
       )[0];
       user.wishlistCourses = user.wishlistCourses || [];
+      user.laterList = user.laterList || [];
+      let laterListSlugs = Object.entries(user.laterList);
       let wishlistSlugs = Object.entries(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
       let cartSlugs = Object.entries(user.cart).filter(
@@ -33,10 +35,22 @@ async function fetchUser(setUser, featuredCourses) {
           };
           return course;
         }),
-        wishlistCourses: wishlistSlugs.map(([id, whislistItem]) => {
-          console.log(id, whislistItem)
+        wishlistCourses: wishlistSlugs.map(([id, wishlistItem]) => {
+          console.log(id, wishlistItem);
           let course = {
-            ...featuredCourses.filter((course) => course.slug === whislistItem.course)[0],
+            ...featuredCourses.filter(
+              (course) => course.slug === wishlistItem.course
+            )[0],
+            id: id,
+          };
+          return course;
+        }),
+        laterListCourses: laterListSlugs.map(([id, laterListItem]) => {
+          console.log(id, laterListItem);
+          let course = {
+            ...featuredCourses.filter(
+              (course) => course.slug === laterListItem.course
+            )[0],
             id: id,
           };
           return course;
@@ -55,33 +69,73 @@ async function fetchUser(setUser, featuredCourses) {
   }
 }
 
-async function addCourseToWishlist(slug, user, setUser, featuredCourses, deleteIfMatches = true) {
-  console.log(user)
-  const duplicatedCourses = user.wishlistCourses.filter(
-    (course) => {
-      return slug === course.slug
-    }
-  );
+async function addCourseToWishlist(
+  slug,
+  user,
+  setUser,
+  featuredCourses,
+  deleteIfMatches = true
+) {
+  console.log(user);
+  const duplicatedCourses = user.wishlistCourses.filter((course) => {
+    return slug === course.slug;
+  });
 
   // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
-  if (deleteIfMatches && duplicatedCourses.length){
+  if (deleteIfMatches && duplicatedCourses.length) {
     const userId = user.id;
-      const result = await axios.delete(
-        `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
-      );
-      if (result) {
-        return fetchUser(setUser, featuredCourses);
-      }
+    const result = await axios.delete(
+      `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
+    );
+    if (result) {
+      return fetchUser(setUser, featuredCourses);
+    }
   }
 
   // condición para saltarnos la ejecución si ya esta el curso en el wishlist
-  if (!deleteIfMatches && duplicatedCourses.length)
-   return;
+  if (!deleteIfMatches && duplicatedCourses.length) return;
 
   try {
     const userId = user.id;
     const result = await axios.post(`/Users/${userId}/wishlistCourses.json`, {
-      'course': slug,
+      course: slug,
+    });
+    if (result) {
+      fetchUser(setUser, featuredCourses);
+    }
+  } catch (error) {}
+}
+
+async function addCourseToSaveforLaterList(
+  slug,
+  user,
+  setUser,
+  featuredCourses,
+  deleteIfMatches = true
+) {
+  console.log(user);
+  const duplicatedCourses = user.laterListCourses.filter((course) => {
+    return slug === course.slug;
+  });
+
+  // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
+  if (deleteIfMatches && duplicatedCourses.length) {
+    const userId = user.id;
+    const result = await axios.delete(
+      `Users/${userId}/laterList/${duplicatedCourses[0].id}.json`
+    );
+    if (result) {
+      return fetchUser(setUser, featuredCourses);
+    }
+  }
+
+  // condición para saltarnos la ejecución si ya esta el curso en el wishlist
+  if (!deleteIfMatches && duplicatedCourses.length) return;
+
+  try {
+    const userId = user.id;
+    const result = await axios.post(`/Users/${userId}/laterList.json`, {
+      course: slug,
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
@@ -220,7 +274,14 @@ function App() {
             )}
           ></Route>
           <Route path="/cart">
-            <Cart user={user} setUser={setUser} featuredCourses={featuredCourses} addCourseToCart={addCourseToCart} addCourseToWishlist={addCourseToWishlist}/>
+            <Cart
+              user={user}
+              setUser={setUser}
+              featuredCourses={featuredCourses}
+              addCourseToCart={addCourseToCart}
+              addCourseToWishlist={addCourseToWishlist}
+              addCourseToSaveforLaterList={addCourseToSaveforLaterList}
+            />
           </Route>
           <Route
             path="/:genericSection"
