@@ -18,6 +18,7 @@ async function fetchUser(setUser, featuredCourses) {
       let user = Object.values(users.data).filter(
         (user) => user.username === "Sandra"
       )[0];
+      user.wishlistCourses = user.wishlistCourses || [];
       let wishlistSlugs = Object.entries(user.wishlistCourses);
       let myCoursesSlugs = Object.entries(user.myCourses);
       let cartSlugs = Object.entries(user.cart).filter(
@@ -32,9 +33,10 @@ async function fetchUser(setUser, featuredCourses) {
           };
           return course;
         }),
-        wishlistCourses: wishlistSlugs.map(([id, slug]) => {
+        wishlistCourses: wishlistSlugs.map(([id, whislistItem]) => {
+          console.log(id, whislistItem)
           let course = {
-            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            ...featuredCourses.filter((course) => course.slug === whislistItem.course)[0],
             id: id,
           };
           return course;
@@ -53,26 +55,33 @@ async function fetchUser(setUser, featuredCourses) {
   }
 }
 
-async function addCourseToWishlist(slug, user, setUser, featuredCourses) {
+async function addCourseToWishlist(slug, user, setUser, featuredCourses, deleteIfMatches = true) {
+  console.log(user)
   const duplicatedCourses = user.wishlistCourses.filter(
-    (course) => slug === course.slug
+    (course) => {
+      return slug === course.slug
+    }
   );
-  if (duplicatedCourses.length) {
-    try {
-      const userId = user.id;
+
+  // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
+  if (deleteIfMatches && duplicatedCourses.length){
+    const userId = user.id;
       const result = await axios.delete(
         `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
       );
       if (result) {
         return fetchUser(setUser, featuredCourses);
       }
-    } catch (error) {}
   }
+
+  // condición para saltarnos la ejecución si ya esta el curso en el wishlist
+  if (!deleteIfMatches && duplicatedCourses.length)
+   return;
+
   try {
-    const propPrefix = "wishlistCourse";
     const userId = user.id;
-    const result = await axios.patch(`/Users/${userId}/wishlistCourses.json`, {
-      [propPrefix + (user.wishlistCourses.length + 1)]: slug,
+    const result = await axios.post(`/Users/${userId}/wishlistCourses.json`, {
+      'course': slug,
     });
     if (result) {
       fetchUser(setUser, featuredCourses);
@@ -105,6 +114,7 @@ function generateRandomHash(propPrefix) {
 }
 
 async function addCourseToCart(slug, user, setUser, featuredCourses) {
+  console.log(user);
   const duplicatedCourses = user.cart.filter((course) => slug === course.slug);
   if (duplicatedCourses.length) {
     try {
@@ -210,7 +220,7 @@ function App() {
             )}
           ></Route>
           <Route path="/cart">
-            <Cart user={user} setUser={setUser} featuredCourses={featuredCourses} addCourseToCart={addCourseToCart}/>
+            <Cart user={user} setUser={setUser} featuredCourses={featuredCourses} addCourseToCart={addCourseToCart} addCourseToWishlist={addCourseToWishlist}/>
           </Route>
           <Route
             path="/:genericSection"

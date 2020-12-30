@@ -40,7 +40,7 @@ function Cart(props) {
                       className="images thumbnail"
                     />
                     <div className="card-item card-content">
-                      <h5 className="card-title">{course.title}</h5>
+                      <h6 className="card-title">{course.title}</h6>
                       <div>
                         <small>{course.author} </small>
                       </div>
@@ -78,7 +78,14 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() => {
-                          setRecentlyWishlisted([...recentlyWishlisted, course]);
+                          console.log(props.user.wishlistCourses, 'user')
+                          props.addCourseToWishlist(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses,
+                            false
+                          )
                           props.addCourseToCart(
                             course.slug,
                             props.user,
@@ -103,7 +110,7 @@ function Cart(props) {
             ))
           )}
           <Col sm={3}>
-            <h5>Total:</h5>
+            <h6>Total:</h6>
             {props.user.cart ? (
               <h1>{totalPrice}</h1>
             ) : (
@@ -131,7 +138,7 @@ function Cart(props) {
                       className="images thumbnail"
                     />
                     <div className="card-item card-content">
-                      <h5 className="card-title">{course.title}</h5>
+                      <h6 className="card-title">{course.title}</h6>
                       <div>
                         <small>{course.author} </small>
                       </div>
@@ -179,10 +186,10 @@ function Cart(props) {
       <Container>
         <p>Recently wishlisted</p>
         <Row>
-          {!recentlyWishlisted.length ? (
+          {!(props.user.wishlistCourses && props.user.wishlistCourses.length) ? (
             <p>You haven't added any courses to your wishlist.</p>
           ) : (
-            recentlyWishlisted.map((course, index) => (
+            props.user.wishlistCourses.map((course, index) => (
               <Col key={`courseItem-${index}`} sm={9}>
                 <div className="container">
                   <Link to={`/course/${course.slug}`}>
@@ -192,7 +199,7 @@ function Cart(props) {
                       className="images thumbnail"
                     />
                     <div className="card-item card-content">
-                      <h5 className="card-title">{course.title}</h5>
+                      <h6 className="card-title">{course.title}</h6>
                       <div>
                         <small>{course.author} </small>
                       </div>
@@ -203,7 +210,12 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() =>
-                          setRecentlyWishlisted(recentlyWishlisted.filter(courseItem => courseItem.slug !== course.slug))
+                          props.addCourseToWishlist(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses
+                          )
                         }
                       >
                         Remove
@@ -211,7 +223,12 @@ function Cart(props) {
                       <Button
                         className="link-button"
                         onClick={() => {
-                          setRecentlyWishlisted(recentlyWishlisted.filter(courseItem => courseItem.slug !== course.slug));
+                          props.addCourseToWishlist(
+                            course.slug,
+                            props.user,
+                            props.setUser,
+                            props.featuredCourses,
+                          );
                           props.addCourseToCart(
                             course.slug,
                             props.user,

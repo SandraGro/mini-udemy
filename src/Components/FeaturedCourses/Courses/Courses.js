@@ -49,13 +49,12 @@ class Courses extends Component {
                       className="card-button"
                       variant="outline-danger"
                       onClick={() =>
-                        {console.log(this.props);
                         this.props.addCourseToCart(
                           course.slug,
                           this.props.user,
                           this.props.setUser,
                           this.props.courses
-                        )}
+                        )
                       }
                       d-inline="true"
                     >
@@ -66,6 +65,7 @@ class Courses extends Component {
                       variant="outline-success"
                       onClick={() =>
                         this.props.addCourseToWishlist(
+                          course.slug,
                           this.props.user,
                           this.props.setUser,
                           this.props.courses
@@ -87,7 +87,7 @@ class Courses extends Component {
                 <Link to={`/course/${course.slug}`}>
                   <Card.Img variant="top" src={course.thumbnail} />
                   <Card.Body>
-                    <Card.Title>{course.title}</Card.Title>
+                    <p className="card-deck-title">{course.title}</p>
                     <Card.Text>{course.author}</Card.Text>
                     <span>${course.discountedPrice} </span>
                     <span>${course.originalPrice}</span>
