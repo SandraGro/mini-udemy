@@ -17,7 +17,7 @@ class CoursesByCategory extends Component {
                     className="images"
                   />
                   <div className="card-item">
-                    <h5 className="card-title">{course.title}</h5>
+                    <h6 className="card-title">{course.title}</h6>
                     <div>
                       <span className="price">${course.discountedPrice} </span>
                       <span className="price">${course.originalPrice} </span>

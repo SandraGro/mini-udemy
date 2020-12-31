@@ -1,13 +1,5 @@
-.card-content {
-    width: 620px;
-}
-
 .thumbnail {
     width: 150px;
-}
-
-.course-container {
-    width: 50%;
 }
 
 button.link-button.btn.btn-primary  {
@@ -19,4 +11,30 @@ button.link-button.btn.btn-primary  {
     text-decoration: none;
     font-size: 13px;
     padding: 0;
+}
+
+.course-card-content img{
+    margin-right: 5px;
+}
+
+.price .discounted-price {
+    margin-block-end: 0;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #686f7a;
+    font-size: 15px;
+    font-weight: 200;
+}
+
+.discounted-price {
+    color: #ec5252;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+.tag-icon{
+    color: #ec5252;
+
 }

@@ -40,6 +40,9 @@ class MyCourses extends Component {
             displayOverlay = {false}
             featuredCourses={this.props.user[coursesToDisplay]}
             courses={this.props.featuredCourses}
+            user={this.props.user}
+            setUser={this.props.setUser}
+            addCourseToCart={this.props.addCourseToCart}
           />
         )}
       </>

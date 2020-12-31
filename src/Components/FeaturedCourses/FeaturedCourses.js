@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Nav } from "react-bootstrap";
+import { Nav, NavLink } from "react-bootstrap";
 import Courses from "./Courses/Courses";
 
 class FeaturedCourses extends Component {
@@ -19,12 +19,12 @@ class FeaturedCourses extends Component {
           {Object.keys(this.props.filteredCourses).map((category, index) => {
             return (
               <Nav.Item key={`category-${index}`}>
-                <Nav.Link
+                <NavLink className="tab-title"
                   eventKey={`link-${category}`}
                   onClick={() => this.setState({ activeCategory: category })}
                 >
                   {category}
-                </Nav.Link>
+                </NavLink>
               </Nav.Item>
             );
           })}

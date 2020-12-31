@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Container, Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as icons from "@fortawesome/free-solid-svg-icons";
 import "./Cart.scss";
 
 function Cart(props) {
   const [totalPrice, setTotalPrice] = useState(null);
-  const [saveForLaterList, setSaveForLaterList] = useState([]);
   useEffect(() => {
     if (props.user.cart) {
       setTotalPrice(
@@ -26,75 +27,110 @@ function Cart(props) {
           ""
         )}
         <Row>
-          {!props.user.cart || !props.user.cart.length ? (
-            <p>Your cart is empty. Keep shopping to find a course!</p>
-          ) : (
-            props.user.cart.map((course, index) => (
-              <Col key={`courseItem-${index}`} sm={9}>
-                <div className="container">
-                  <Link to={`/course/${course.slug}`}>
-                    <img
-                      alt=""
-                      src={course.thumbnail}
-                      className="images thumbnail"
-                    />
-                    <div className="card-item card-content">
-                      <h5 className="card-title">{course.title}</h5>
-                      <div>
-                        <small>{course.author} </small>
-                      </div>
-                    </div>
-                  </Link>
-                  <div>
-                    <span>
-                      <Button
-                        className="link-button"
-                        onClick={() =>
-                          props.addCourseToCart(
-                            course.slug,
-                            props.user,
-                            props.setUser,
-                            props.featuredCourses
-                          )
-                        }
-                      >
-                        Remove
-                      </Button>
-                      <Button
-                        className="link-button"
-                        onClick={() => {
-                          setSaveForLaterList([...saveForLaterList, course]);
-                          props.addCourseToCart(
-                            course.slug,
-                            props.user,
-                            props.setUser,
-                            props.featuredCourses
-                          );
-                        }}
-                      >
-                        Save for later
-                      </Button>
-                      <Button
-                        className="link-button"
-                        onClick={() => console.log("button was clicked")}
-                      >
-                        Move to wishlist
-                      </Button>
-                    </span>
-                  </div>
-                  <Link className="container" to={`/course/${course.slug}`}>
-                    <div className="price">
-                      <p>${course.originalPrice} </p>
-                      <p>${course.discountedPrice} </p>
-                    </div>
-                  </Link>
-                </div>
-                <hr />
-              </Col>
-            ))
-          )}
-          <Col sm={3}>
-            <h5>Total:</h5>
+          <Col key={`courseItem-container`} sm={9}>
+            <Row>
+              {!props.user.cart || !props.user.cart.length ? (
+                <p>Your cart is empty. Keep shopping to find a course!</p>
+              ) : (
+                props.user.cart.map((course, index) => (
+                  <Col key={`courseItem-${index}`} sm={12}>
+                    <Row>
+                      <Col key={`courseItem-${index}`} sm={8}>
+                        <div className="course-container">
+                          <Link to={`/course/${course.slug}`}>
+                            <div className="course-card-content">
+                              <img
+                                alt=""
+                                src={course.thumbnail}
+                                className="images thumbnail float-left"
+                              />
+                              <h6 className="card-title">{course.title}</h6>
+                              <br />
+                              <small>{course.author}</small>
+                            </div>
+                          </Link>
+                        </div>
+                      </Col>
+                      <Col key={`courseLinks-${index}`} sm={2}>
+                        <Button
+                          className="link-button"
+                          onClick={() =>
+                            props.addCourseToCart(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            )
+                          }
+                        >
+                          Remove
+                        </Button>
+                        <Button
+                          className="link-button"
+                          onClick={() => {
+                            props.addCourseToSaveforLaterList(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                            props.addCourseToCart(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                          }}
+                        >
+                          Save for later
+                        </Button>
+                        <Button
+                          className="link-button"
+                          onClick={() => {
+                            console.log(props.user.wishlistCourses, "user");
+                            props.addCourseToWishlist(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses,
+                              false
+                            );
+                            props.addCourseToCart(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                          }}
+                        >
+                          Move to wishlist
+                        </Button>
+                      </Col>
+                      <Col sm={2}>
+                        <Link
+                          className="course-container"
+                          to={`/course/${course.slug}`}
+                        >
+                          <div className="price">
+                            <p className="discounted-price">
+                              ${course.discountedPrice}{" "}
+                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                            </p>
+                            <p className="original-price">
+                              ${course.originalPrice}{" "}
+                            </p>
+                          </div>
+                        </Link>
+                      </Col>
+                    </Row>
+                    <hr />
+                  </Col>
+                ))
+              )}
+            </Row>
+          </Col>
+          <Col sm={3} className="align-top">
+            <h6>Total:</h6>
             {props.user.cart ? (
               <h1>{totalPrice}</h1>
             ) : (
@@ -109,71 +145,179 @@ function Cart(props) {
       <Container>
         <p>Saved for later</p>
         <Row>
-          {!saveForLaterList.length ? (
-            <p>You haven't saved any courses for later.</p>
-          ) : (
-            saveForLaterList.map((course, index) => (
-              <Col key={`courseItem-${index}`} sm={9}>
-                <div className="container">
-                  <Link to={`/course/${course.slug}`}>
-                    <img
-                      alt=""
-                      src={course.thumbnail}
-                      className="images thumbnail"
-                    />
-                    <div className="card-item card-content">
-                      <h5 className="card-title">{course.title}</h5>
-                      <div>
-                        <small>{course.author} </small>
-                      </div>
-                    </div>
-                  </Link>
-                  <div>
-                    <span>
-                      <Button
-                        className="link-button"
-                        onClick={() =>
-                          props.addCourseToCart(
-                            course.slug,
-                            props.user,
-                            props.setUser,
-                            props.featuredCourses
-                          )
-                        }
-                      >
-                        Remove
-                      </Button>
-                      <Button
-                        className="link-button"
-                        onClick={() => {
-                          setSaveForLaterList(saveForLaterList.filter(courseItem => courseItem.slug !== course.slug));
-                          props.addCourseToCart(
-                            course.slug,
-                            props.user,
-                            props.setUser,
-                            props.featuredCourses
-                          );
-                        }}
-                      >
-                        Move to cart
-                      </Button>
-                    </span>
-                  </div>
-                  <Link className="container" to={`/course/${course.slug}`}>
-                    <div className="price">
-                      <p>${course.originalPrice} </p>
-                      <p>${course.discountedPrice} </p>
-                    </div>
-                  </Link>
-                </div>
-                <hr />
-              </Col>
-            ))
-          )}
+          <Col key={`courseItem-container`} sm={9}>
+            <Row>
+              {!(
+                props.user.laterListCourses &&
+                props.user.laterListCourses.length
+              ) ? (
+                <p>You haven't saved any courses for later.</p>
+              ) : (
+                props.user.laterListCourses.map((course, index) => (
+                  <Col key={`courseItem-${index}`} sm={12}>
+                    <Row>
+                      <Col key={`courseItem-${index}`} sm={8}>
+                        <div className="course-container">
+                          <Link to={`/course/${course.slug}`}>
+                            <div className="course-card-content">
+                              <img
+                                alt=""
+                                src={course.thumbnail}
+                                className="images thumbnail float-left"
+                              />
+                              <h6 className="card-title">{course.title}</h6>
+                              <br />
+                              <small>{course.author}</small>
+                            </div>
+                          </Link>
+                        </div>
+                      </Col>
+                      <Col key={`courseLinks-${index}`} sm={2}>
+                        <Button
+                          className="link-button"
+                          onClick={() =>
+                            props.addCourseToSaveforLaterList(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            )
+                          }
+                        >
+                          Remove
+                        </Button>
+                        <Button
+                          className="link-button"
+                          onClick={() => {
+                            props.addCourseToSaveforLaterList(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                            props.addCourseToCart(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                          }}
+                        >
+                          Move to cart
+                        </Button>
+                      </Col>
+                      <Col sm={2}>
+                        <Link
+                          className="course-container"
+                          to={`/course/${course.slug}`}
+                        >
+                          <div className="price">
+                            <p className="discounted-price">
+                              ${course.discountedPrice}{" "}
+                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                            </p>
+                            <p className="original-price">
+                              ${course.originalPrice}{" "}
+                            </p>
+                          </div>
+                        </Link>
+                      </Col>
+                    </Row>
+                    <hr />
+                  </Col>
+                ))
+              )}
+            </Row>
+          </Col>
         </Row>
       </Container>
       <Container>
         <p>Recently wishlisted</p>
+        <Row>
+          <Col key={`courseItem-container`} sm={9}>
+            <Row>
+              {!(
+                props.user.wishlistCourses && props.user.wishlistCourses.length
+              ) ? (
+                <p>You haven't added any courses to your wishlist.</p>
+              ) : (
+                props.user.wishlistCourses.map((course, index) => (
+                  <Col key={`courseItem-${index}`} sm={12}>
+                    <Row>
+                      <Col key={`courseItem-${index}`} sm={8}>
+                        <div className="course-container">
+                          <Link to={`/course/${course.slug}`}>
+                            <div className="course-card-content">
+                              <img
+                                alt=""
+                                src={course.thumbnail}
+                                className="images thumbnail float-left"
+                              />
+                              <h6 className="card-title">{course.title}</h6>
+                              <br />
+                              <small>{course.author}</small>
+                            </div>
+                          </Link>
+                        </div>
+                      </Col>
+                      <Col key={`courseLinks-${index}`} sm={2}>
+                        <Button
+                          className="link-button"
+                          onClick={() =>
+                            props.addCourseToWishlist(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            )
+                          }
+                        >
+                          Remove
+                        </Button>
+                        <Button
+                          className="link-button"
+                          onClick={() => {
+                            props.addCourseToWishlist(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                            props.addCourseToCart(
+                              course.slug,
+                              props.user,
+                              props.setUser,
+                              props.featuredCourses
+                            );
+                          }}
+                        >
+                          Move to cart
+                        </Button>
+                      </Col>
+                      <Col sm={2}>
+                        <Link
+                          className="course-container"
+                          to={`/course/${course.slug}`}
+                        >
+                          <div className="price">
+                            <p className="discounted-price">
+                              ${course.discountedPrice}{" "}
+                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                            </p>
+                            <p className="original-price">
+                              ${course.originalPrice}{" "}
+                            </p>
+                          </div>
+                        </Link>
+                      </Col>
+                    </Row>
+                    <hr />
+                  </Col>
+                ))
+              )}
+            </Row>
+          </Col>
+        </Row>
       </Container>
     </>
   );
