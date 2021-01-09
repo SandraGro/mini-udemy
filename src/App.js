@@ -28,9 +28,9 @@ async function fetchUser(setUser, featuredCourses) {
       );
       setUser({
         ...user,
-        myCourses: myCoursesSlugs.map(([id, slug]) => {
+        myCourses: myCoursesSlugs.map(([id, courseItem]) => {
           let course = {
-            ...featuredCourses.filter((course) => course.slug === slug)[0],
+            ...featuredCourses.filter((course) => course.slug === courseItem.course)[0],
             id: id,
           };
           return course;
@@ -69,6 +69,16 @@ async function fetchUser(setUser, featuredCourses) {
   }
 }
 
+async function searchCourse (searchTerm) {
+  try {
+    // curl 'https://dinosaur-facts.firebaseio.com/dinosaurs.json?orderBy="height"&startAt=3&print=pretty'
+
+  } catch (error) {
+    console.error(error);
+  }
+
+}
+
 async function addCourseToWishlist(
   slug,
   user,
@@ -81,21 +91,21 @@ async function addCourseToWishlist(
     return slug === course.slug;
   });
 
-  // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
-  if (deleteIfMatches && duplicatedCourses.length) {
-    const userId = user.id;
-    const result = await axios.delete(
-      `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
-    );
-    if (result) {
-      return fetchUser(setUser, featuredCourses);
-    }
-  }
-
-  // condición para saltarnos la ejecución si ya esta el curso en el wishlist
-  if (!deleteIfMatches && duplicatedCourses.length) return;
-
+  
   try {
+    // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
+    if (deleteIfMatches && duplicatedCourses.length) {
+      const userId = user.id;
+      const result = await axios.delete(
+        `Users/${userId}/wishlistCourses/${duplicatedCourses[0].id}.json`
+      );
+      if (result) {
+        return fetchUser(setUser, featuredCourses);
+      }
+    }
+
+    // condición para saltarnos la ejecución si ya esta el curso en el wishlist
+    if (!deleteIfMatches && duplicatedCourses.length) return;
     const userId = user.id;
     const result = await axios.post(`/Users/${userId}/wishlistCourses.json`, {
       course: slug,
@@ -103,7 +113,9 @@ async function addCourseToWishlist(
     if (result) {
       fetchUser(setUser, featuredCourses);
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 async function addCourseToSaveforLaterList(
@@ -152,10 +164,9 @@ async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
     return;
   }
   try {
-    const propPrefix = "myCourse";
     const userId = user.id;
-    const result = await axios.patch(`/Users/${userId}/myCourses.json`, {
-      [propPrefix + user.myCourses.length]: slug,
+    const result = await axios.post(`/Users/${userId}/myCourses.json`, {
+      course: slug,
     });
     if (result) {
       fetchUser(setUser, featuredCourses);

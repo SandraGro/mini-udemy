@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Container, Col, Row, Button } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Container, Col, Row, Button, Modal } from "react-bootstrap";
+import { Link, Route } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import "./Cart.scss";
 
 function Cart(props) {
-  const [totalPrice, setTotalPrice] = useState(null);
+  const [totalOriginalPrice, setTotalOriginalPrice] = useState(null);
+  const [totalDiscountedPrice, setTotalDiscountedPrice] = useState(null);
+
+  const [isOpenBuyModal, setIsOpenBuyModal] = useState(false);
+  console.log(props.user.cart);
+
   useEffect(() => {
     if (props.user.cart) {
-      setTotalPrice(
+      setTotalOriginalPrice(
         props.user.cart.reduce((total, course) => {
-          return (
-            total + parseInt(course.discountedPrice || course.originalPrice)
-          );
+          return total + parseInt(course.originalPrice || 0);
+        }, 0)
+      );
+      setTotalDiscountedPrice(
+        props.user.cart.reduce((total, course) => {
+          return total + parseInt(course.discountedPrice || 0);
         }, 0)
       );
     }
@@ -114,7 +122,9 @@ function Cart(props) {
                           <div className="price">
                             <p className="discounted-price">
                               ${course.discountedPrice}{" "}
-                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                              <span className="tag-icon">
+                                <FontAwesomeIcon icon={icons.faTag} size="1x" />
+                              </span>
                             </p>
                             <p className="original-price">
                               ${course.originalPrice}{" "}
@@ -132,16 +142,64 @@ function Cart(props) {
           <Col sm={3} className="align-top">
             <h6>Total:</h6>
             {props.user.cart ? (
-              <h1>{totalPrice}</h1>
+              <h1>MXN${totalDiscountedPrice}</h1>
             ) : (
               <h1> There are no courses in the cart</h1>
             )}
-            <Button variant="danger" size="lg" block>
+            <Button
+              variant="danger"
+              size="lg"
+              block
+              onClick={() => setIsOpenBuyModal(true)}
+            >
               Checkout
             </Button>
           </Col>
         </Row>
       </Container>
+      <Modal show={isOpenBuyModal} onHide={() => setIsOpenBuyModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">Summary</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Container>
+            <Row>
+              <Col xs={8} md={8}>
+                Original Price:
+              </Col>
+              <Col xs={4} md={4}>
+                MXN${totalOriginalPrice}
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={8} md={8}>
+                Coupon discounts:
+              </Col>
+              <Col xs={4} md={4}>
+                MMXN${totalDiscountedPrice - totalOriginalPrice}
+              </Col>
+            </Row>
+            <hr></hr>
+            <Row>
+              <Col xs={8} md={8}>
+                Total:
+              </Col>
+              <Col xs={4} md={4}>
+                MMXN${totalDiscountedPrice}
+              </Col>
+            </Row>
+          </Container>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            onClick={() => {
+              setIsOpenBuyModal(false);
+            }}
+          >
+            Complete Payment
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <Container>
         <p>Saved for later</p>
         <Row>
@@ -214,7 +272,9 @@ function Cart(props) {
                           <div className="price">
                             <p className="discounted-price">
                               ${course.discountedPrice}{" "}
-                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                              <span className="tag-icon">
+                                <FontAwesomeIcon icon={icons.faTag} size="1x" />
+                              </span>
                             </p>
                             <p className="original-price">
                               ${course.originalPrice}{" "}
@@ -302,7 +362,9 @@ function Cart(props) {
                           <div className="price">
                             <p className="discounted-price">
                               ${course.discountedPrice}{" "}
-                              <span className="tag-icon"><FontAwesomeIcon icon={icons.faTag} size="1x" /></span>
+                              <span className="tag-icon">
+                                <FontAwesomeIcon icon={icons.faTag} size="1x" />
+                              </span>
                             </p>
                             <p className="original-price">
                               ${course.originalPrice}{" "}
