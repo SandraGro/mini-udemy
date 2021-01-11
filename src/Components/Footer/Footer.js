@@ -53,7 +53,7 @@ function Footer() {
                         <Row>
                             <Col xs={10}>
                                 <div className="icon-container">
-                                    <FontAwesomeIcon icon={icons.faCircle} />
+                                    <FontAwesomeIcon icon={icons.faGlobe} />
                                 </div>
                                     <select required="" className="dropdown-language">
                                         <option value="en_US">English</option>

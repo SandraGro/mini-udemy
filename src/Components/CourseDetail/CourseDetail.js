@@ -12,6 +12,7 @@ import {
 import ReactStars from "react-rating-stars-component";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
+import * as fas from "@fortawesome/free-regular-svg-icons";
 import "./CourseDetail.scss";
 import { useParams, useLocation } from "react-router-dom";
 
@@ -31,6 +32,15 @@ function CourseDetail(props) {
   }, [props.featuredCourses, courseSlug]);
   if (!featureCourse) {
     return <p>Loading...</p>;
+  }
+  let isWishlisted = false;
+  if (featureCourse) {
+    let wishlistFiltered =
+      props.user.wishlistCourses &&
+      props.user.wishlistCourses.filter(
+        (wlCourse) => wlCourse.slug === courseSlug
+      );
+    isWishlisted = wishlistFiltered && wishlistFiltered.length > 0;
   }
   const courseIsBought = () => {
     return props.user.myCourses.find((course) => course.slug === courseSlug);
@@ -146,7 +156,7 @@ function CourseDetail(props) {
             </span>
             <span>Last updated 10/2019</span>
             <span className="last-update-date__icon">
-              <FontAwesomeIcon icon={icons.faCircleNotch} />
+              <FontAwesomeIcon icon={icons.faGlobe} />
             </span>
             <span>English</span>
           </div>
@@ -162,7 +172,7 @@ function CourseDetail(props) {
               )
             }
           >
-            Wishlist <FontAwesomeIcon icon={icons.faHeart} />
+            Wishlist <FontAwesomeIcon icon={isWishlisted ? icons.faHeart : fas.faHeart} />
           </Button>
           <Button
             className="mr-1 mt-2"

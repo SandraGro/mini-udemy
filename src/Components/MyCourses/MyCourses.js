@@ -43,6 +43,7 @@ class MyCourses extends Component {
             user={this.props.user}
             setUser={this.props.setUser}
             addCourseToCart={this.props.addCourseToCart}
+            addCourseToWishlist={this.props.addCourseToWishlist}
           />
         )}
       </>

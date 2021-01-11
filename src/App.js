@@ -91,7 +91,7 @@ async function addCourseToWishlist(
     return slug === course.slug;
   });
 
-  
+
   try {
     // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
     if (deleteIfMatches && duplicatedCourses.length) {
@@ -144,15 +144,12 @@ async function addCourseToSaveforLaterList(
   // condición para saltarnos la ejecución si ya esta el curso en el wishlist
   if (!deleteIfMatches && duplicatedCourses.length) return;
 
-  try {
-    const userId = user.id;
-    const result = await axios.post(`/Users/${userId}/laterList.json`, {
-      course: slug,
-    });
-    if (result) {
-      fetchUser(setUser, featuredCourses);
-    }
-  } catch (error) {}
+  const userId = user.id;
+  await axios.post(`/Users/${userId}/laterList.json`, {
+    course: slug,
+  });
+  fetchUser(setUser, featuredCourses);
+
 }
 
 async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
@@ -281,6 +278,7 @@ function App() {
                 setUser={setUser}
                 activeSection={match.params.subsection}
                 addCourseToCart={addCourseToCart}
+                addCourseToWishlist={addCourseToWishlist}
               />
             )}
           ></Route>

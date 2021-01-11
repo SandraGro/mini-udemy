@@ -8,6 +8,7 @@ import {
   Button,
 } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import * as fas from "@fortawesome/free-regular-svg-icons";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import "./Courses.scss";
@@ -21,10 +22,17 @@ class Courses extends Component {
     };
   }
   render() {
+    let coursesToRender = this.props.featuredCourses;
+    coursesToRender = coursesToRender.map((course) => {
+      let wishlistFiltered = this.props.user.wishlistCourses && this.props.user.wishlistCourses.filter((wlCourse) => wlCourse.slug === course.slug);
+      course.inWhishlist = wishlistFiltered && (wishlistFiltered.length > 0)
+      return course;
+    });
+
     return (
       <>
         <CardDeck>
-          {this.props.featuredCourses.map((course, index) => (
+          {coursesToRender.map((course, index) => (
             <div key={`cardDeck-${index}`}>
               <Overlay
                 target={this.overlayRef[`overlay-${index}`]}
@@ -72,7 +80,7 @@ class Courses extends Component {
                         )
                       }
                     >
-                      <FontAwesomeIcon icon={icons.faHeart} />
+                      <FontAwesomeIcon icon={course.inWhishlist ? icons.faHeart : fas.faHeart}/>
                     </Button>
                   </Popover.Content>
                 </Popover>
