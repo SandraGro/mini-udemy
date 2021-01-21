@@ -10,6 +10,7 @@ import CoursesByCategory from "./Components/CoursesByCategory/CoursesByCategory"
 import MyCourses from "./Components/MyCourses/MyCourses";
 import InfoTemplate from "./Components/InfoTemplates/InfoTemplate";
 import Cart from "./Components/Cart/Cart";
+import SearchResultList from "./Components/searchResultsList/SearchResultsList";
 
 async function fetchUser(setUser, featuredCourses) {
   try {
@@ -30,7 +31,9 @@ async function fetchUser(setUser, featuredCourses) {
         ...user,
         myCourses: myCoursesSlugs.map(([id, courseItem]) => {
           let course = {
-            ...featuredCourses.filter((course) => course.slug === courseItem.course)[0],
+            ...featuredCourses.filter(
+              (course) => course.slug === courseItem.course
+            )[0],
             id: id,
           };
           return course;
@@ -69,14 +72,25 @@ async function fetchUser(setUser, featuredCourses) {
   }
 }
 
-async function searchCourse (searchTerm) {
-  try {
-    // curl 'https://dinosaur-facts.firebaseio.com/dinosaurs.json?orderBy="height"&startAt=3&print=pretty'
+async function getCourses() {
+  return axios.get("/featuredCourses.json");
+}
 
+async function searchCourse(searchTerm) {
+  if (searchTerm.length < 2) {
+    return [];
+  }
+  try {
+    const courses = await getCourses();
+    return Object.values(courses.data).filter((courseItem) => {
+      const { title, author, category } = courseItem;
+      const concatenatedString = `${title} ${author} ${category}`.toLowerCase();
+      return concatenatedString.includes(searchTerm);
+    });
+    // curl 'https://dinosaur-facts.firebaseio.com/dinosaurs.json?orderBy="height"&startAt=3&print=pretty'
   } catch (error) {
     console.error(error);
   }
-
 }
 
 async function addCourseToWishlist(
@@ -90,7 +104,6 @@ async function addCourseToWishlist(
   const duplicatedCourses = user.wishlistCourses.filter((course) => {
     return slug === course.slug;
   });
-
 
   try {
     // condición para borrar el elemento si esta duplicado y deleteIfMatches es verdadero
@@ -149,7 +162,6 @@ async function addCourseToSaveforLaterList(
     course: slug,
   });
   fetchUser(setUser, featuredCourses);
-
 }
 
 async function addCourseToAllCourses(slug, user, setUser, featuredCourses) {
@@ -208,7 +220,7 @@ function App() {
   useEffect(() => {
     const setData = async () => {
       try {
-        const courses = await axios.get("/featuredCourses.json");
+        const courses = await getCourses();
         let featuredCourses;
         if (courses) {
           featuredCourses = Object.values(courses.data);
@@ -242,75 +254,91 @@ function App() {
   const filteredCourses = sortByCategory(featuredCourses);
   return (
     <Router>
-      <Layout user={user} featuredCourses={featuredCourses}>
-        <Switch>
-          {
-            // Access to params using match property of the Route (similar to useParams hook)
-          }
-          <Route
-            path="/course/category/:categoryName"
-            render={({ match }) => (
-              <CoursesByCategory
-                categoryCourses={
-                  match.params.categoryName === "allcourses"
-                    ? featuredCourses
-                    : filteredCourses[match.params.categoryName] || []
-                }
-              />
-            )}
-          ></Route>
-          <Route path="/course/:courseSlug">
-            <CourseDetail
-              featuredCourses={featuredCourses}
-              user={user}
-              setUser={setUser}
-              addCourseToWishlist={addCourseToWishlist}
-              addCourseToAllCourses={addCourseToAllCourses}
-              addCourseToCart={addCourseToCart}
-            />
-          </Route>
-          <Route
-            path="/mycourses/:subsection"
-            render={({ match }) => (
-              <MyCourses
-                featuredCourses={featuredCourses}
-                user={user}
-                setUser={setUser}
-                activeSection={match.params.subsection}
-                addCourseToCart={addCourseToCart}
-                addCourseToWishlist={addCourseToWishlist}
-              />
-            )}
-          ></Route>
-          <Route path="/cart">
-            <Cart
-              user={user}
-              setUser={setUser}
-              featuredCourses={featuredCourses}
-              addCourseToCart={addCourseToCart}
-              addCourseToWishlist={addCourseToWishlist}
-              addCourseToSaveforLaterList={addCourseToSaveforLaterList}
-            />
-          </Route>
-          <Route
-            path="/:genericSection"
-            render={() => <InfoTemplate />}
-          ></Route>
-          <Route path="/">
-            <Banner />
-            <BenefitsContainer />
-            <hr></hr>
-            <FeaturedCourses
-              filteredCourses={filteredCourses}
-              featuredCourses={featuredCourses}
-              user={user}
-              setUser={setUser}
-              addCourseToWishlist={addCourseToWishlist}
-              addCourseToCart={addCourseToCart}
-            />
-          </Route>
-        </Switch>
-      </Layout>
+      <Route
+        render={(props) => (
+          <Layout
+            props={{...props}}
+            user={user}
+            featuredCourses={featuredCourses}
+            searchCourse={searchCourse}
+          >
+            <Switch>
+              {
+                // Access to params using match property of the Route (similar to useParams hook)
+              }
+              <Route
+                path="/course/category/:categoryName"
+                render={({ match }) => (
+                  <CoursesByCategory
+                    categoryCourses={
+                      match.params.categoryName === "allcourses"
+                        ? featuredCourses
+                        : filteredCourses[match.params.categoryName] || []
+                    }
+                  />
+                )}
+              ></Route>
+              <Route path="/course/search/:searchTerm">
+                <SearchResultList
+                  user={user}
+                  setUser={setUser}
+                  featuredCourses={featuredCourses}
+                />
+              </Route>
+              <Route path="/course/:courseSlug">
+                <CourseDetail
+                  featuredCourses={featuredCourses}
+                  user={user}
+                  setUser={setUser}
+                  addCourseToWishlist={addCourseToWishlist}
+                  addCourseToAllCourses={addCourseToAllCourses}
+                  addCourseToCart={addCourseToCart}
+                />
+              </Route>
+              <Route
+                path="/mycourses/:subsection"
+                render={({ match }) => (
+                  <MyCourses
+                    featuredCourses={featuredCourses}
+                    user={user}
+                    setUser={setUser}
+                    activeSection={match.params.subsection}
+                    addCourseToCart={addCourseToCart}
+                    addCourseToWishlist={addCourseToWishlist}
+                  />
+                )}
+              ></Route>
+              <Route path="/cart">
+                <Cart
+                  user={user}
+                  setUser={setUser}
+                  featuredCourses={featuredCourses}
+                  addCourseToCart={addCourseToCart}
+                  addCourseToWishlist={addCourseToWishlist}
+                  addCourseToSaveforLaterList={addCourseToSaveforLaterList}
+                />
+              </Route>
+              <Route
+                path="/:genericSection"
+                render={() => <InfoTemplate />}
+              ></Route>
+              <Route path="/">
+                <Banner />
+                <BenefitsContainer />
+                <hr></hr>
+                <FeaturedCourses
+                  filteredCourses={filteredCourses}
+                  featuredCourses={featuredCourses}
+                  user={user}
+                  setUser={setUser}
+                  addCourseToWishlist={addCourseToWishlist}
+                  addCourseToCart={addCourseToCart}
+                />
+              </Route>
+            </Switch>
+          </Layout>
+        )}
+      ></Route>
     </Router>
   );
 }

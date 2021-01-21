@@ -6,7 +6,12 @@ class Layout extends Component {
   render() {
     return (
       <>
-        <Header user={this.props.user} featuredCourses={this.props.featuredCourses} />
+        <Header
+          history={this.props.props.history}
+          user={this.props.user}
+          featuredCourses={this.props.featuredCourses}
+          searchCourse={this.props.searchCourse}
+        />
         {this.props.children}
         <Footer />
       </>

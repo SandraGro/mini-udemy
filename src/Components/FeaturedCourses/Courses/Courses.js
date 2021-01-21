@@ -24,8 +24,12 @@ class Courses extends Component {
   render() {
     let coursesToRender = this.props.featuredCourses;
     coursesToRender = coursesToRender.map((course) => {
-      let wishlistFiltered = this.props.user.wishlistCourses && this.props.user.wishlistCourses.filter((wlCourse) => wlCourse.slug === course.slug);
-      course.inWhishlist = wishlistFiltered && (wishlistFiltered.length > 0)
+      let wishlistFiltered =
+        this.props.user.wishlistCourses &&
+        this.props.user.wishlistCourses.filter(
+          (wlCourse) => wlCourse.slug === course.slug
+        );
+      course.inWhishlist = wishlistFiltered && wishlistFiltered.length > 0;
       return course;
     });
 
@@ -54,8 +58,8 @@ class Courses extends Component {
                   <div>{course.description}</div>
                   <Popover.Content>
                     <Button
-                      className="card-button"
-                      variant="outline-danger"
+                      className="mr-1 w-75"
+                      variant="danger"
                       onClick={() =>
                         this.props.addCourseToCart(
                           course.slug,
@@ -69,7 +73,7 @@ class Courses extends Component {
                       Add to cart
                     </Button>
                     <Button
-                      className="mr-1 mt-2"
+                      className="mr-1"
                       variant="outline-success"
                       onClick={() =>
                         this.props.addCourseToWishlist(
@@ -80,7 +84,9 @@ class Courses extends Component {
                         )
                       }
                     >
-                      <FontAwesomeIcon icon={course.inWhishlist ? icons.faHeart : fas.faHeart}/>
+                      <FontAwesomeIcon
+                        icon={course.inWhishlist ? icons.faHeart : fas.faHeart}
+                      />
                     </Button>
                   </Popover.Content>
                 </Popover>
@@ -96,9 +102,9 @@ class Courses extends Component {
                   <Card.Img variant="top" src={course.thumbnail} />
                   <Card.Body>
                     <p className="card-deck-title">{course.title}</p>
-                    <Card.Text>{course.author}</Card.Text>
-                    <span>${course.discountedPrice} </span>
-                    <span>${course.originalPrice}</span>
+                    <Card.Text className="card-deck-auhtor">{course.author}</Card.Text>
+                    <span className="discounted-price">${course.discountedPrice} </span>
+                    <span className="original-price">${course.originalPrice}</span>
                     {course.bestseller ? (
                       <Badge variant="warning">Bestseller</Badge>
                     ) : (
