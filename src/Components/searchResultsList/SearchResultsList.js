@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Container, Col, Row, Button, Modal } from "react-bootstrap";
+import React from "react";
+import { Container, Col, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as icons from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 function SearchResultList(props) {
-  console.log();
+  let { searchTerm } = useParams();
+  const searchResult = props.featuredCourses.filter((courseItem) => {
+    const { title, author, category } = courseItem;
+    const concatenatedString = `${title} ${author} ${category}`.toLowerCase();
+    return concatenatedString.includes(searchTerm);
+  });
   return (
     <Container>
       <Row>
         {!props.featuredCourses || !props.featuredCourses.length ? (
           <p>Your cart is empty. Keep shopping to find a course!</p>
         ) : (
-          props.featuredCourses.map((course, index) => (
-            <Col key={`course-item-container`} sm={9}>
+          searchResult.map((course, index) => (
+            <Col key={`course-item-container-${index}`} sm={9}>
               <Row>
                 <Col sm={12}>
                   <Row>

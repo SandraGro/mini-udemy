@@ -39,7 +39,6 @@ async function fetchUser(setUser, featuredCourses) {
           return course;
         }),
         wishlistCourses: wishlistSlugs.map(([id, wishlistItem]) => {
-          console.log(id, wishlistItem);
           let course = {
             ...featuredCourses.filter(
               (course) => course.slug === wishlistItem.course
@@ -49,7 +48,6 @@ async function fetchUser(setUser, featuredCourses) {
           return course;
         }),
         laterListCourses: laterListSlugs.map(([id, laterListItem]) => {
-          console.log(id, laterListItem);
           let course = {
             ...featuredCourses.filter(
               (course) => course.slug === laterListItem.course
@@ -68,7 +66,7 @@ async function fetchUser(setUser, featuredCourses) {
       });
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
 
@@ -100,7 +98,6 @@ async function addCourseToWishlist(
   featuredCourses,
   deleteIfMatches = true
 ) {
-  console.log(user);
   const duplicatedCourses = user.wishlistCourses.filter((course) => {
     return slug === course.slug;
   });
@@ -138,7 +135,6 @@ async function addCourseToSaveforLaterList(
   featuredCourses,
   deleteIfMatches = true
 ) {
-  console.log(user);
   const duplicatedCourses = user.laterListCourses.filter((course) => {
     return slug === course.slug;
   });
@@ -188,7 +184,6 @@ function generateRandomHash(propPrefix) {
 }
 
 async function addCourseToCart(slug, user, setUser, featuredCourses) {
-  console.log(user);
   const duplicatedCourses = user.cart.filter((course) => slug === course.slug);
   if (duplicatedCourses.length) {
     try {
@@ -228,7 +223,7 @@ function App() {
           fetchUser(setUser, featuredCourses);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     setData();

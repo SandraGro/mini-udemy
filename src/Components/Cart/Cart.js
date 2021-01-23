@@ -10,7 +10,6 @@ function Cart(props) {
   const [totalDiscountedPrice, setTotalDiscountedPrice] = useState(null);
 
   const [isOpenBuyModal, setIsOpenBuyModal] = useState(false);
-  console.log(props.user.cart);
 
   useEffect(() => {
     if (props.user.cart) {
@@ -95,7 +94,6 @@ function Cart(props) {
                         <Button
                           className="link-button"
                           onClick={() => {
-                            console.log(props.user.wishlistCourses, "user");
                             props.addCourseToWishlist(
                               course.slug,
                               props.user,

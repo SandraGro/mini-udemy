@@ -66,12 +66,16 @@ class Header extends Component {
                 type="text"
                 placeholder="Search"
                 onKeyPress={(event) => {
-                  console.log('aa')
-                  if (event.key === 'Enter'){
-                    event.preventDefault()
-                    this.props.history.push(`/course/search/${this.state.searchTerm}`)
-                    console.log(this.props, 'props');
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    this.props.history.push(
+                      `/course/search/${this.state.searchTerm}`
+                    );
                   }
+                }}
+                onBlur={() => {
+                  //Update state to clean SearchResult array to hide results in suggestion box
+                  this.setState({ searchResult: [] });
                 }}
                 value={this.state.searchTerm}
                 className="search-input mr-sm-2"
@@ -80,7 +84,14 @@ class Header extends Component {
                   const searchResult = await this.props.searchCourse(
                     searchTerm
                   );
-                  this.setState({ searchTerm: searchTerm, searchResult });
+                  this.setState({ searchTerm, searchResult });
+                }}
+                onFocus={async () => {
+                  //Update state to show suggestion box by using the searchTerm in the state to fech results
+                  const searchResult = await this.props.searchCourse(
+                    this.state.searchTerm
+                  );
+                  this.setState({ searchResult });
                 }}
               />
             </Form>
