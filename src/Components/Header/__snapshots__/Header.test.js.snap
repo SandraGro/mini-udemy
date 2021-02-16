@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Header component tests should render correctly 1`] = `
+<Router
+  history={
+    Object {
+      "action": "POP",
+      "block": [Function],
+      "createHref": [Function],
+      "go": [Function],
+      "goBack": [Function],
+      "goForward": [Function],
+      "length": 1,
+      "listen": [Function],
+      "location": Object {
+        "hash": "",
+        "pathname": "/",
+        "search": "",
+        "state": undefined,
+      },
+      "push": [Function],
+      "replace": [Function],
+    }
+  }
+>
+  <Header
+    featuredCourses={Array []}
+    history={
+      Object {
+        "push": [Function],
+      }
+    }
+    searchCourse={[Function]}
+    user={
+      Object {
+        "cart": Array [],
+        "id": "user01",
+        "myCourses": Array [],
+        "username": "Sandra",
+      }
+    }
+  />
+</Router>
+`;
