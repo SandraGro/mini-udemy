@@ -7,11 +7,11 @@ function SuggestionBox(props) {
   return (
     <ul
       className={`${
-        suggestions.length ? "visible" : ""
-      } suggestion-box suggestion-box-list`}
+        suggestions.length ? "visible " : ""
+      }suggestion-box suggestion-box-list`}
     >
       {suggestions.map((suggestion, index) => (
-        <Link to={`/course/${suggestion.slug}`}>
+        <Link key={`suggestionItem-${index}`}  to={`/course/${suggestion.slug}`}>
           <li key={`suggestion-${index}`}>
             <span>{suggestion.category} | </span>
             <span>{suggestion.title}. </span>

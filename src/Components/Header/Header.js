@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as alternativeIcons from "@fortawesome/free-regular-svg-icons";
 import * as icons from "@fortawesome/free-solid-svg-icons";
 import SuggestionBox from "./suggestionBox";
-import userEvent from "@testing-library/user-event";
 
 class Header extends Component {
   state = {
@@ -75,7 +74,9 @@ class Header extends Component {
                 }}
                 onBlur={() => {
                   //Update state to clean SearchResult array to hide results in suggestion box
-                  this.setState({ searchResult: [] });
+                  setTimeout(() => {
+                    this.setState({ searchResult: [] });
+                  }, 200);
                 }}
                 value={this.state.searchTerm}
                 className="search-input mr-sm-2"
@@ -87,7 +88,7 @@ class Header extends Component {
                   this.setState({ searchTerm, searchResult });
                 }}
                 onFocus={async () => {
-                  //Update state to show suggestion box by using the searchTerm in the state to fech results
+                  //Update state to show suggestion by using the searchTerm in the state to fech results
                   const searchResult = await this.props.searchCourse(
                     this.state.searchTerm
                   );

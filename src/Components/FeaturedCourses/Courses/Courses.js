@@ -51,11 +51,11 @@ class Courses extends Component {
                 >
                   <Popover.Title as="h3">{course.title}</Popover.Title>
                   {course.bestseller ? (
-                    <Badge variant="warning">Bestseller</Badge>
+                    <Badge className="course-description" variant="warning">Bestseller</Badge>
                   ) : (
                     ""
                   )}
-                  <div>{course.description}</div>
+                  <div className="course-description">{course.description}</div>
                   <Popover.Content>
                     <Button
                       className="mr-1 w-75"
@@ -103,7 +103,7 @@ class Courses extends Component {
                   <Card.Body>
                     <p className="card-deck-title">{course.title}</p>
                     <Card.Text className="card-deck-auhtor">{course.author}</Card.Text>
-                    <span className="discounted-price">${course.discountedPrice} </span>
+                    <span className="card-deck-discounted-price">${course.discountedPrice} </span>
                     <span className="original-price">${course.originalPrice}</span>
                     {course.bestseller ? (
                       <Badge variant="warning">Bestseller</Badge>

@@ -25,7 +25,7 @@ function SearchResultList(props) {
                   <Row>
                     <Col sm={8}>
                       <div className="course-container">
-                        <Link to="">
+                        <Link to={`/course/${course.slug}`}>
                           <div className="course-card-content">
                             <img
                               alt=""
@@ -34,7 +34,7 @@ function SearchResultList(props) {
                             />
                             <h6 className="card-title">{course.title}</h6>
                             <br />
-                            <small>Author</small>
+                            <small>{course.author}</small>
                             <div className="price">
                               <p className="discounted-price">
                                 ${course.discountedPrice}{" "}
