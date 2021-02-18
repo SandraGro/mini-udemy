@@ -2,7 +2,7 @@ import React from "react";
 import { shallow, mount } from "enzyme";
 import { BrowserRouter as Router } from "react-router-dom";
 import toJson from "enzyme-to-json";
-
+import courseList from "../../Fixtures/CourseList.json";
 import Header from "./Header";
 
 describe("Header component tests", () => {
@@ -14,7 +14,14 @@ describe("Header component tests", () => {
   };
   const featuredCourses = [];
   const searchCourse = function searchCourse(searchTerm) {
-    return [];
+    if (searchTerm.length < 2) {
+      return [];
+    }
+    return Object.values(courseList).filter((courseItem) => {
+      const { title, author, category } = courseItem;
+      const concatenatedString = `${title} ${author} ${category}`.toLowerCase();
+      return concatenatedString.includes(searchTerm);
+    });
   };
   const history = { push: function push() {} };
   it("should render correctly", () => {
@@ -31,7 +38,7 @@ describe("Header component tests", () => {
     expect(toJson(header)).toMatchSnapshot();
   });
   it("should render the correct count on the cart icon", () => {
-      //arrange
+    //arrange
     const testUser = {
       ...user,
       cart: [
@@ -57,5 +64,33 @@ describe("Header component tests", () => {
     const badge = header.find(".badge.badge-danger");
     //assert
     expect(badge.html()).toBe(`<span class="badge badge-danger">3</span>`);
+  });
+  it("should render suggestions when there is a search term in the input", async () => {
+    //arrange
+    const header = mount(
+      <Router>
+        <Header
+          history={history}
+          user={user}
+          featuredCourses={featuredCourses}
+          searchCourse={searchCourse}
+        />
+      </Router>
+    );
+    // Find the input and enter text
+
+    //act
+    //Checar porque llegan dos inputs, por qué no está corriendo el setState
+    const eventObj = { target: { value: "photo" } };
+    const input = header.find("input.search-input");
+    const input2 = header.find("input.search-input");
+    console.log(input2.debug());
+
+    await input.simulate("change", eventObj);
+    header.update();
+    const suggestions = header.find("ul.visible.suggestion-box a");
+    console.log(header.html());
+    //assert
+    expect(suggestions).toHaveLength(3);
   });
 });
