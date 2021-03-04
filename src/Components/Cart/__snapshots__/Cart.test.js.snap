@@ -1,0 +1,192 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Cart component tests should render the correct messages when the cart is empty 1`] = `
+<Fragment>
+  <Container
+    fluid={false}
+  >
+    <p>
+       
+      0
+       courses in cart
+    </p>
+    <Row
+      noGutters={false}
+    >
+      <Col
+        key="courseItem-container"
+        sm={9}
+      >
+        <Row
+          noGutters={false}
+        >
+          <p>
+            Your cart is empty. Keep shopping to find a course!
+          </p>
+        </Row>
+      </Col>
+      <Col
+        className="align-top total-price"
+        sm={3}
+      >
+        <h6>
+          Total:
+        </h6>
+        <h1>
+          MXN$
+        </h1>
+        <Button
+          active={false}
+          block={true}
+          disabled={false}
+          onClick={[Function]}
+          size="lg"
+          variant="danger"
+        >
+          Checkout
+        </Button>
+      </Col>
+    </Row>
+  </Container>
+  <Modal
+    animation={true}
+    autoFocus={true}
+    backdrop={true}
+    dialogAs={
+      Object {
+        "$$typeof": Symbol(react.forward_ref),
+        "displayName": "ModalDialog",
+        "render": [Function],
+      }
+    }
+    enforceFocus={true}
+    keyboard={true}
+    onHide={[Function]}
+    restoreFocus={true}
+    show={false}
+  >
+    <ModalHeader
+      closeButton={true}
+      closeLabel="Close"
+    >
+      <ModalTitle
+        id="example-modal-sizes-title-lg"
+      >
+        Summary
+      </ModalTitle>
+    </ModalHeader>
+    <ModalBody>
+      <Container
+        fluid={false}
+      >
+        <Row
+          noGutters={false}
+        >
+          <Col
+            md={8}
+            xs={8}
+          >
+            Original Price:
+          </Col>
+          <Col
+            md={4}
+            xs={4}
+          >
+            MXN$
+          </Col>
+        </Row>
+        <Row
+          noGutters={false}
+        >
+          <Col
+            md={8}
+            xs={8}
+          >
+            Coupon discounts:
+          </Col>
+          <Col
+            md={4}
+            xs={4}
+          >
+            MMXN$
+            0
+          </Col>
+        </Row>
+        <hr />
+        <Row
+          noGutters={false}
+        >
+          <Col
+            md={8}
+            xs={8}
+          >
+            Total:
+          </Col>
+          <Col
+            md={4}
+            xs={4}
+          >
+            MMXN$
+          </Col>
+        </Row>
+      </Container>
+    </ModalBody>
+    <ModalFooter>
+      <Button
+        active={false}
+        disabled={false}
+        onClick={[Function]}
+        variant="primary"
+      >
+        Complete Payment
+      </Button>
+    </ModalFooter>
+  </Modal>
+  <Container
+    fluid={false}
+  >
+    <p>
+      Saved for later
+    </p>
+    <Row
+      noGutters={false}
+    >
+      <Col
+        key="courseItem-container"
+        sm={9}
+      >
+        <Row
+          noGutters={false}
+        >
+          <p>
+            You haven't saved any courses for later.
+          </p>
+        </Row>
+      </Col>
+    </Row>
+  </Container>
+  <Container
+    fluid={false}
+  >
+    <p>
+      Recently wishlisted
+    </p>
+    <Row
+      noGutters={false}
+    >
+      <Col
+        key="courseItem-container"
+        sm={9}
+      >
+        <Row
+          noGutters={false}
+        >
+          <p>
+            You haven't added any courses to your wishlist.
+          </p>
+        </Row>
+      </Col>
+    </Row>
+  </Container>
+</Fragment>
+`;

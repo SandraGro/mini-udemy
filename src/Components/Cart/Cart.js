@@ -137,7 +137,7 @@ function Cart(props) {
               )}
             </Row>
           </Col>
-          <Col sm={3} className="align-top">
+          <Col sm={3} className="align-top total-price">
             <h6>Total:</h6>
             {props.user.cart ? (
               <h1>MXN${totalDiscountedPrice}</h1>

@@ -77,20 +77,15 @@ describe("Header component tests", () => {
         />
       </Router>
     );
-    // Find the input and enter text
-
-    //act
-    //Checar porque llegan dos inputs, por qué no está corriendo el setState
     const eventObj = { target: { value: "photo" } };
     const input = header.find("input.search-input");
-    const input2 = header.find("input.search-input");
-    console.log(input2.debug());
 
+    // Find the input and enter text
+    //act
     await input.simulate("change", eventObj);
     header.update();
-    const suggestions = header.find("ul.visible.suggestion-box a");
-    console.log(header.html());
     //assert
+    const suggestions = header.find("ul.visible.suggestion-box a");
     expect(suggestions).toHaveLength(3);
   });
 });
