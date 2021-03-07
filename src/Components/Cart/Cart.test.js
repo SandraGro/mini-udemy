@@ -116,4 +116,31 @@ describe("Cart component tests", () => {
     expect(pricesContainer.html()).not.toMatch("MXN$0");
     expect(pricesContainer.html()).toMatch(`MXN$${totalPrice}`);
   });
+
+  it("should render the checkout button when there is a course in the cart", () => {
+    const courses = [
+      courseList["course01"],
+      courseList["course02"],
+      courseList["course03"],
+    ];
+
+    const testUser = {
+      ...user,
+      cart: courses,
+    };
+    const cart = mount(
+      <Router>
+        <Cart
+          user={testUser}
+          addCourseToCart={addCourseToCart}
+          addCourseToSaveforLaterList={addCourseToSaveforLaterList}
+          addCourseToWishlist={addCourseToWishlist}
+          setUser={setUser}
+          featuredCourses={featuredCourses}
+        />
+      </Router>
+    );
+    const pricesContainer = cart.find("div.total-price");
+    expect(pricesContainer.html()).toMatch("Checkout");
+  });
 });

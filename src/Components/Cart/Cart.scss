@@ -38,3 +38,20 @@ button.link-button.btn.btn-primary  {
     color: #ec5252;
 
 }
+
+.cart-no-item{
+    text-align: center;
+    display: block;
+}
+
+.cart-icon {
+    color: #e8e9eb;
+    margin: 30px;
+}
+
+.empty-cart {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

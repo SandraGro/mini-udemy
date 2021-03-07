@@ -37,7 +37,15 @@ function Cart(props) {
           <Col key={`courseItem-container`} sm={9}>
             <Row>
               {!props.user.cart || !props.user.cart.length ? (
-                <p>Your cart is empty. Keep shopping to find a course!</p>
+                <Col className="empty-cart">
+                  <FontAwesomeIcon className="cart-icon" size="5x" icon={icons.faShoppingCart} />
+                  <h6 className="cart-no-item">
+                    Your cart is empty. Keep shopping to find a course!
+                  </h6>
+                  <a href="/" className="btn btn-danger">
+                    Keep shopping
+                  </a>
+                </Col>
               ) : (
                 props.user.cart.map((course, index) => (
                   <Col key={`courseItem-${index}`} sm={12}>
@@ -138,20 +146,22 @@ function Cart(props) {
             </Row>
           </Col>
           <Col sm={3} className="align-top total-price">
-            <h6>Total:</h6>
-            {props.user.cart ? (
-              <h1>MXN${totalDiscountedPrice}</h1>
+            {props.user.cart && props.user.cart.length > 0 ? (
+              <>
+                <h6>Total:</h6>
+                <h1>MXN${totalDiscountedPrice}</h1>
+                <Button
+                  variant="danger"
+                  size="lg"
+                  block
+                  onClick={() => setIsOpenBuyModal(true)}
+                >
+                  Checkout
+                </Button>
+              </>
             ) : (
-              <h1> There are no courses in the cart</h1>
+              <p></p>
             )}
-            <Button
-              variant="danger"
-              size="lg"
-              block
-              onClick={() => setIsOpenBuyModal(true)}
-            >
-              Checkout
-            </Button>
           </Col>
         </Row>
       </Container>
