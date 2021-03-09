@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MyCourses component tests should render tabs correctly 1`] = `
+<Fragment>
+  <Nav
+    activeKey="learning"
+    fill={false}
+    justify={false}
+    variant="tabs"
+  >
+    <NavItem>
+      <NavLink
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        disabled={false}
+        eventKey="learning"
+        onClick={[Function]}
+      >
+        All courses
+      </NavLink>
+    </NavItem>
+    <NavItem>
+      <NavLink
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        disabled={false}
+        eventKey="wishlist"
+        onClick={[Function]}
+      >
+        Wishlist
+      </NavLink>
+    </NavItem>
+  </Nav>
+  <Courses
+    addCourseToCart={[Function]}
+    addCourseToWishlist={[Function]}
+    courses={Array []}
+    displayOverlay={false}
+    featuredCourses={
+      Array [
+        Object {
+          "author": "Mohsen Hassan, bloom team",
+          "bestseller": true,
+          "category": "Business",
+          "description": "Learn how to ipsum aaaaaah jiji tank yuuu! Wiiiii la bodaaa bappleees la bodaaa bappleees butt. Daa tulaliloo po kass la bodaaa underweaaar hahaha jeje butt. Poopayee uuuhhh la bodaaa para tú hana dul sae tulaliloo poopayee jeje hahaha underweaaar",
+          "discountedPrice": "199",
+          "originalPrice": "499",
+          "rating": 4.5,
+          "reviews": 280,
+          "slug": "the-complete-foundation-stock-trading-course",
+          "thumbnail": "https://img-a.udemycdn.com/course/240x135/1288044_d262_4.jpg?ef_bGb-l7fymYgM8RbuBZoZyX3X5vrxq-J65lDugvCyBEjaZ9vn9RYzF1CsNGQlqB9dmg9m99a52hI54pSPRY-BcxZ4pXpmNN7UCk09Ho8qhVuWGujXM8wZ8D7_bB148",
+          "title": "The Complete Foundation Stock Trading Course",
+        },
+      ]
+    }
+    setUser={[Function]}
+    user={
+      Object {
+        "cart": Array [],
+        "id": "user01",
+        "myCourses": Array [
+          Object {
+            "author": "Mohsen Hassan, bloom team",
+            "bestseller": true,
+            "category": "Business",
+            "description": "Learn how to ipsum aaaaaah jiji tank yuuu! Wiiiii la bodaaa bappleees la bodaaa bappleees butt. Daa tulaliloo po kass la bodaaa underweaaar hahaha jeje butt. Poopayee uuuhhh la bodaaa para tú hana dul sae tulaliloo poopayee jeje hahaha underweaaar",
+            "discountedPrice": "199",
+            "originalPrice": "499",
+            "rating": 4.5,
+            "reviews": 280,
+            "slug": "the-complete-foundation-stock-trading-course",
+            "thumbnail": "https://img-a.udemycdn.com/course/240x135/1288044_d262_4.jpg?ef_bGb-l7fymYgM8RbuBZoZyX3X5vrxq-J65lDugvCyBEjaZ9vn9RYzF1CsNGQlqB9dmg9m99a52hI54pSPRY-BcxZ4pXpmNN7UCk09Ho8qhVuWGujXM8wZ8D7_bB148",
+            "title": "The Complete Foundation Stock Trading Course",
+          },
+        ],
+        "username": "Sandra",
+        "wishlistCourses": Array [
+          Object {
+            "author": "Rosie Parsons",
+            "bestseller": true,
+            "category": "Photography",
+            "description": "Learn how to ipsum aaaaaah jiji tank yuuu! Wiiiii la bodaaa bappleees la bodaaa bappleees butt. Daa tulaliloo po kass la bodaaa underweaaar hahaha jeje butt. Poopayee uuuhhh la bodaaa para tú hana dul sae tulaliloo poopayee jeje hahaha underweaaar",
+            "discountedPrice": "299",
+            "originalPrice": "1899",
+            "rating": 4,
+            "reviews": 380,
+            "slug": "photography-beginners-photography-camera-settings",
+            "thumbnail": "https://img-a.udemycdn.com/course/240x135/410068_fea4_2.jpg?wDi_M1EPjqGCGSsbayaIh6zdHgLJ3xAM3k141WGTLZobHVnimb2-w1v-JMz0nLS3moRC9ELSwwGgwaUTM7BAXGIMHjKndo5VQRaHWz3m5ik7Zrq3LWd8b4bB8U1YfU0 1x, https://img-a.udemycdn.com/course/480x270/410068_fea4_2.jpg?haWxl114j3nK9Diz0-CyfCeMXHik7Jfkvz6o5eK7x0AY2IFa6gdZE-YrdFuDRkfQOQI_cHj1DtyDFqG9ZP52poPnQheK1ihP4NxfekiXWUq9rvftJa54_2v-IeuxKAo 2x'",
+            "title": "Photography Beginners: DSLR Photography Camera Settings",
+          },
+        ],
+      }
+    }
+  />
+</Fragment>
+`;

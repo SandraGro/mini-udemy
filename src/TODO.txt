@@ -1,11 +1,11 @@
--Cambiar el icono corazon para diferenciar elementos de la wishlist
--Acomodar el icono de wishlist en el overlay
 -Quitar el overlay en wishlist section
 -Cambiar estilos del cardDeck
--Agregar modal para el checkout del cart
+-Arreglar clases
 ----------------------------------------------
--Search (estilos y funcionalidad)
--Login / signUp
--Agregar redux
 -Agregar test
+-Login / signUp
+-context API(alternativa de Redux)
+-Agregar redux
 -Deployar a heroku
+------------------------
+-Buscar el concepto de fixtures en pruebas unitarias
